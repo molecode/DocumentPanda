@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}DocumentPanda - {{ year }}{% endblock %}
+
+{% block body %}
+    <h2>{{ year }}</h2>
+    <table class="striped">
+        <thead>
+        <tr>
+            <th>Monat</th>
+            <th>Netto</th>
+            <th>Brutto</th>
+            <th>Umsatzsteuer</th>
+            <th>Stundenlohn</th>
+            <th>Std/Monat</th>
+            <th>Std/Woche</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for _, month in months.items %}
+            <tr>
+                <td>{{ month.get_month_display }}</td>
+                <td>{{ month.netto }}</td>
+                <td>{{ month.brutto }}</td>
+                <td>{{ month.umsatzsteuer }}</td>
+                <td>{{ month.fee }}</td>
+                <td>{{ month.hours }}</td>
+                <td>{{ month.hours_per_week }}</td>
+            </tr>
+        {% endfor %}
+            <tr><td colspan="7"><hr></td></tr>
+            <tr>
+                <td>I. Quartal</td>
+            </tr>
+            <tr>
+                <td>II. Quartal</td>
+            </tr>
+            <tr>
+                <td>III. Quartal</td>
+            </tr>
+            <tr>
+                <td>IV. Quartal</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load static %}
+
+ <!DOCTYPE html>
+  <html>
+    <head>
+      <title>{% block title %}DocumentPanda{% endblock %}</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!-- Kube CSS -->
+      <link rel="stylesheet" href="{% static 'css/kube.min.css' %}">
+    </head>
+
+    <body>
+      {% block body %}
+      {% endblock %}
+      <script src="{% static 'js/jquery.min.js' %}"></script>
+      <script src="{% static 'js/kube.min.js' %}"></script>
+    </body>
+  </html>
