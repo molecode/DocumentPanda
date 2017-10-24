@@ -17,7 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^customer/', include('customer.urls', namespace='customer')),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', include('dp_customer.urls')),
+    # url(r'^$', views.index, name='index'),
 ]
 

@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% block content %}
+    <a href="{% url 'customer:add' %}">{% trans 'Add customer' %}</a>
+    {% if customer_list %}
+        <ul>
+        {% for customer in customer_list %}
+            <li><a href="{% url 'customer:detail' customer.id %}">{{ customer.customer_id }} - {{ customer.name }}</a>(<a href="{% url 'customer:update' customer.id %}">{% trans 'Update' %}</a>, <a href="{% url 'customer:delete' customer.id %}">{% trans 'Delete' %}</a>)</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>{% trans 'No customer are available.' %}</p>
+    {% endif %}
+{% endblock %}
