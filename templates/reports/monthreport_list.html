@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block body %}
+    <a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a>
+    {% if monthreport_list %}
+        <ul>
+        {% for report in monthreport_list %}
+            <li><a href="{% url 'reports:detail' report.id %}">{{ report }}</a>(<a href="{% url 'reports:update' report.id %}">{% trans 'Update' %}</a>, <a href="{% url 'reports:delete' report.id %}">{% trans 'Delete' %}</a>)</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>{% trans 'No reports are available.' %}</p>
+    {% endif %}
+{% endblock body %}

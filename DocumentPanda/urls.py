@@ -19,6 +19,7 @@ from django.conf import settings
 
 urlpatterns = [
     url(r'^customer/', include('customer.urls', namespace='customer')),
+    url(r'^reports/', include('reports.urls', namespace='reports')),
     url(r'^admin/', admin.site.urls),
     # url(r'^$', views.index, name='index'),
 ]
