@@ -1,6 +1,9 @@
+{%  extends 'base.html' %}
 {% load i18n %}
 
-<form action="" method="post">{% csrf_token %}
-    <p>{% trans 'Are you sure you want to delete' %} "{{ object }}"?</p>
-    <input type="submit" value="{% trans 'Confirm' %}" />
-</form>
+{% block body %}
+    <form action="" method="post">{% csrf_token %}
+        <p>{% trans 'Are you sure you want to delete' %} "{{ object }}"?</p>
+        <input type="submit" value="{% trans 'Confirm' %}" />
+    </form>
+{% endblock body %}

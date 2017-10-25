@@ -1,24 +1,27 @@
+{%  extends 'base.html' %}
 {% load i18n %}
 
-<table>
-    <tr>
-        <td>{% trans 'Name' %}</td>
-        <td>{{ customer.name }}</td>
-    </tr>
-    <tr>
-        <td>{% trans 'Customer ID' %}</td>
-        <td>{{  customer.customer_id }}</td>
-    </tr>
-    <tr>
-        <td>{% trans 'Active' %}</td>
-        <td>{{ customer.active }}</td>
-    </tr>
-    <tr>
-        <td>{% trans 'Created at' %}</td>
-        <td>{{  customer.created_at }}</td>
-    </tr>
-    <tr>
-        <td>{% trans 'Updated at' %}</td>
-        <td>{{ customer.updated_at }}</td>
-    </tr>
-</table>
+{% block body %}
+    <table>
+        <tr>
+            <td>{% trans 'Name' %}</td>
+            <td>{{ customer.name }}</td>
+        </tr>
+        <tr>
+            <td>{% trans 'Customer ID' %}</td>
+            <td>{{  customer.customer_id }}</td>
+        </tr>
+        <tr>
+            <td>{% trans 'Active' %}</td>
+            <td>{{ customer.active }}</td>
+        </tr>
+        <tr>
+            <td>{% trans 'Created at' %}</td>
+            <td>{{  customer.created_at }}</td>
+        </tr>
+        <tr>
+            <td>{% trans 'Updated at' %}</td>
+            <td>{{ customer.updated_at }}</td>
+        </tr>
+    </table>
+{% endblock body %}

@@ -1,6 +1,7 @@
+{%  extends 'base.html' %}
 {% load i18n %}
 
-{% block content %}
+{% block body %}
     <a href="{% url 'customer:add' %}">{% trans 'Add customer' %}</a>
     {% if customer_list %}
         <ul>
@@ -11,4 +12,4 @@
     {% else %}
         <p>{% trans 'No customer are available.' %}</p>
     {% endif %}
-{% endblock %}
+{% endblock body %}
