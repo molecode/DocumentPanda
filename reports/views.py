@@ -7,8 +7,13 @@ from .models import MonthReport
 
 class ReportsListView(ListView):
     model = MonthReport
-    queryset = MonthReport.objects.select_related('customer')
 
+    def get_queryset(self, *args, **kwargs):
+        reports = MonthReport.objects.select_related('customer')
+        year = self.kwargs.get('year', None)
+        if year:
+            return reports.filter(year=year)
+        return reports
 
 class ReportsDetailView(DetailView):
     model = MonthReport

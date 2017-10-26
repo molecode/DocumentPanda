@@ -55,7 +55,7 @@ class MonthReport(models.Model):
 
     class Meta:
         unique_together = (('customer', 'month', 'year'),)
-        ordering = ['year', 'month']
+        ordering = ['-year', '-month']
 
     def save(self, *args, **kwargs):
         self.slug = slugify('{}-{}'.format(self.year, self.month))
@@ -85,8 +85,8 @@ class MonthReport(models.Model):
         return round(self.hours / Decimal(4.33), 2)
 
     def __str__(self):
-        return '{}/{} - {} - {}: {} Euro'.format(self.year,
+        return '{}/{:0>2} - {} - {} Euro - {} '.format(self.year,
                                                  self.month,
-                                                 self.customer.name,
                                                  _('Netto'),
-                                                 self.netto)
+                                                 self.netto,
+                                                 self.customer.name)
