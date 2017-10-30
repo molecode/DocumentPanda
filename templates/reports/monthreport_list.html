@@ -4,6 +4,12 @@
 {% block body %}
     <a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a>
     {% if monthreport_list %}
+        {% if years and years|length > 1 %}
+            <br \>
+            {% for year in years %}
+                <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
+            {% endfor %}
+        {% endif %}
         <ul>
         {% for report in monthreport_list %}
             <li><a href="{% url 'reports:detail' report.id %}">{{ report }}</a>(<a href="{% url 'reports:update' report.id %}">{% trans 'Update' %}</a>, <a href="{% url 'reports:delete' report.id %}">{% trans 'Delete' %}</a>)</li>

@@ -15,6 +15,12 @@ class ReportsListView(ListView):
             return reports.filter(year=year)
         return reports
 
+    def get_context_data(self, **kwargs):
+        context = super(ReportsListView, self).get_context_data(**kwargs)
+        context['years'] = sorted(set(MonthReport.objects.values_list('year', flat=True)), reverse=True)
+        return context
+
+
 class ReportsDetailView(DetailView):
     model = MonthReport
     queryset = MonthReport.objects.select_related('customer')
