@@ -37,26 +37,24 @@ class ReportsListView(ListView):
 
 class ReportsDetailView(DetailView):
     model = MonthReport
-    queryset = MonthReport.objects.select_related('customer')
 
 
-class ReportsCreateView(CreateView):
+class ChangeReportMixin(object):
+    """Mixin for every Report which is been modified: create, update, delete."""
     model = MonthReport
-    queryset = MonthReport.objects.select_related('customer')
-    template_name = 'common/form.html'
     fields = ['customer', 'month', 'year', 'hours', 'fee']
-    success_url = reverse_lazy('reports:index')
+
+    def get_success_url(self):
+        return reverse_lazy('reports:year_report', kwargs={'year': self.object.year})
 
 
-class ReportsUpdateView(UpdateView):
-    model = MonthReport
+class ReportsCreateView(ChangeReportMixin, CreateView):
     template_name = 'common/form.html'
-    fields = ['customer', 'month', 'year', 'hours', 'fee']
-    success_url = reverse_lazy('reports:index')
 
 
-class ReportsDeleteView(DeleteView):
-    model = MonthReport
-    queryset = MonthReport.objects.select_related('customer')
+class ReportsUpdateView(ChangeReportMixin, UpdateView):
+    template_name = 'common/form.html'
+
+
+class ReportsDeleteView(ChangeReportMixin, DeleteView):
     template_name = 'common/confirm_delete.html'
-    success_url = reverse_lazy('reports:index')

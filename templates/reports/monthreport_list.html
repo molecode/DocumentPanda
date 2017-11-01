@@ -2,11 +2,9 @@
 {% load i18n %}
 
 {% block body %}
-    {% if years|length > 1 %}
-        {% for year in years %}
-            <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
-        {% endfor %}
-    {% endif %}
+    {% for year in years %}
+        <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
+    {% endfor %}
     <h1>{{ view.kwargs.year }}</h1>
     <ul>
         <li><a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a></li>
