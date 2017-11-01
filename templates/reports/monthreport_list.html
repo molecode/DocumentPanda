@@ -2,20 +2,20 @@
 {% load i18n %}
 
 {% block body %}
-    <a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a>
+    {% if years|length > 1 %}
+        {% for year in years %}
+            <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
+        {% endfor %}
+    {% endif %}
+    <h1>{{ view.kwargs.year }}</h1>
+    <ul>
+        <li><a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a></li>
     {% if monthreport_list %}
-        {% if years and years|length > 1 %}
-            <br \>
-            {% for year in years %}
-                <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
-            {% endfor %}
-        {% endif %}
-        <ul>
         {% for report in monthreport_list %}
             <li><a href="{% url 'reports:detail' report.id %}">{{ report }}</a>(<a href="{% url 'reports:update' report.id %}">{% trans 'Update' %}</a>, <a href="{% url 'reports:delete' report.id %}">{% trans 'Delete' %}</a>)</li>
         {% endfor %}
-        </ul>
     {% else %}
         <p>{% trans 'No reports are available.' %}</p>
     {% endif %}
+    </ul>
 {% endblock body %}

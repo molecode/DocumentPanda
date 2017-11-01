@@ -84,6 +84,13 @@ class MonthReport(models.Model):
         """Get the hours of work of this month."""
         return round(self.hours / Decimal(4.33), 2)
 
+    @classmethod
+    def get_last_report(cls):
+        try:
+            return cls.objects.order_by('id')[0]
+        except IndexError:
+            return None
+
     def __str__(self):
         return '{}/{:0>2} - {} - {} Euro - {} '.format(self.year,
                                                  self.month,
