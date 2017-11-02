@@ -10,7 +10,7 @@
         <li><a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a></li>
     {% if monthreport_list %}
         {% for report in monthreport_list %}
-            <li><a href="{% url 'reports:detail' report.id %}">{{ report }}</a>(<a href="{% url 'reports:update' report.id %}">{% trans 'Update' %}</a>, <a href="{% url 'reports:delete' report.id %}">{% trans 'Delete' %}</a>)</li>
+            <li><a href="{% url 'reports:update' report.id %}">{{ report }}</a>(<a href="{% url 'reports:delete' report.id %}">{% trans 'Delete' %}</a>)</li>
         {% endfor %}
     {% else %}
         <p>{% trans 'No reports are available.' %}</p>

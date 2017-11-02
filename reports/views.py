@@ -21,6 +21,7 @@ class ReportsRedirectview(RedirectView):
 
 class ReportsListView(ListView):
     model = MonthReport
+    template_name = 'reports/year_report.html'
 
     def get_queryset(self, *args, **kwargs):
         reports = MonthReport.objects.select_related('customer')
@@ -35,8 +36,8 @@ class ReportsListView(ListView):
         return context
 
 
-class ReportsDetailView(DetailView):
-    model = MonthReport
+# class ReportsDetailView(DetailView):
+#     model = MonthReport
 
 
 class ChangeReportMixin(object):
