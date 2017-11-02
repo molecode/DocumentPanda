@@ -3,6 +3,8 @@ from django.views.generic import ListView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
+from customer.models import Customer
+
 from .models import MonthReport
 
 
@@ -39,6 +41,8 @@ class ReportsListView(ListView):
         customers = customers.values('customer__id', 'customer__name')
         # Eliminate duplicates
         context['customers'] = list({customer['customer__id']: customer for customer in customers}.values())
+        if 'customer' in self.kwargs:
+            context['current_customer'] = Customer.objects.get(id=self.kwargs['customer'])
         return context
 
 

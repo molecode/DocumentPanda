@@ -10,7 +10,7 @@
     {% for customer in customers|dictsort:'customer__name' %}
         <a href="{% url 'reports:year_report' view.kwargs.year customer.customer__id %}">{{ customer.customer__name }}</a>
     {% endfor %}
-    <h1>{{ view.kwargs.year }} {% if view.kwargs.customer %}-- {{ view.kwargs.customer }}{% endif %}</h1>
+    <h1>{{ view.kwargs.year }} {% if view.kwargs.customer %}-- {{ current_customer.name }}{% endif %}</h1>
     <ul>
         <li><a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a></li>
     {% if monthreport_list %}
