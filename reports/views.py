@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.views.generic import ListView, DetailView, RedirectView
+from django.views.generic import ListView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -25,19 +25,21 @@ class ReportsListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         reports = MonthReport.objects.select_related('customer')
-        last_report = MonthReport.get_last_report()
-        last_year = last_report.year if last_report else timezone.now().year
-        year = self.kwargs.get('year', last_year)
-        return reports.filter(year=year)
+        if 'customer' in self.kwargs:
+            reports = reports.filter(customer=self.kwargs['customer'])
+        return reports.filter(year=self.kwargs.get('year'))
 
     def get_context_data(self, **kwargs):
         context = super(ReportsListView, self).get_context_data(**kwargs)
+        # Using set() here because distinct isn't working with sqlite
         context['years'] = sorted(set(MonthReport.objects.values_list('year', flat=True)), reverse=True)
+        # Get a list of all customer of this year
+        year = self.kwargs.get('year')
+        customers = MonthReport.objects.select_related('customer').filter(year=year)
+        customers = customers.values('customer__id', 'customer__name')
+        # Eliminate duplicates
+        context['customers'] = list({customer['customer__id']: customer for customer in customers}.values())
         return context
-
-
-# class ReportsDetailView(DetailView):
-#     model = MonthReport
 
 
 class ChangeReportMixin(object):
