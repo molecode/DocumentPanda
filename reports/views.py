@@ -34,7 +34,8 @@ class ReportsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ReportsListView, self).get_context_data(**kwargs)
         # Using set() here because distinct isn't working with sqlite
-        context['years'] = sorted(set(MonthReport.objects.values_list('year', flat=True)), reverse=True)
+        years = sorted(set(MonthReport.objects.values_list('year', flat=True)), reverse=True)
+        context['years'] = map(str, years)
         # Get a list of all customer of this year
         year = self.kwargs.get('year')
         customers = MonthReport.objects.select_related('customer').filter(year=year)

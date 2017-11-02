@@ -3,14 +3,26 @@
 
 {% block body %}
     {% for year in years %}
-        <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
+        {% if year == view.kwargs.year %}
+            {{ year }}
+        {% else %}
+            <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
+        {% endif %}
     {% endfor %}
     <br \>
     {% if customers %}
-        <a href="{% url 'reports:year_report' view.kwargs.year %}">{% trans 'All' %}</a>
+        {% if view.kwargs.customer %}
+            <a href="{% url 'reports:year_report' view.kwargs.year %}">{% trans 'All' %}</a>
+        {% else %}
+            {% trans 'All' %}
+        {% endif %}
     {% endif %}
     {% for customer in customers|dictsort:'customer__name' %}
-        <a href="{% url 'reports:year_report' view.kwargs.year customer.customer__id %}">{{ customer.customer__name }}</a>
+        {% if current_customer.name == customer.customer__name %}
+            {{ customer.customer__name }}
+        {% else %}
+            <a href="{% url 'reports:year_report' view.kwargs.year customer.customer__id %}">{{ customer.customer__name }}</a>
+        {% endif %}
     {% endfor %}
     <h1>{{ view.kwargs.year }} {% if view.kwargs.customer %}-- {{ current_customer.name }}{% endif %}</h1>
     <ul>
