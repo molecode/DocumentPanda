@@ -6,7 +6,9 @@
         <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
     {% endfor %}
     <br \>
-    <a href="{% url 'reports:year_report' view.kwargs.year %}">{% trans 'All' %}</a>
+    {% if customers %}
+        <a href="{% url 'reports:year_report' view.kwargs.year %}">{% trans 'All' %}</a>
+    {% endif %}
     {% for customer in customers|dictsort:'customer__name' %}
         <a href="{% url 'reports:year_report' view.kwargs.year customer.customer__id %}">{{ customer.customer__name }}</a>
     {% endfor %}
