@@ -9,7 +9,7 @@
             <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
         {% endif %}
     {% endfor %}
-    <br \>
+    <br />
     {% if customers %}
         {% if view.kwargs.customer %}
             <a href="{% url 'reports:year_report' view.kwargs.year %}">{% trans 'All' %}</a>
@@ -25,7 +25,10 @@
         {% endif %}
     {% endfor %}
     <h1>{{ view.kwargs.year }} {% if view.kwargs.customer %}-- {{ current_customer.name }}{% endif %}</h1>
-    <table>
+    <a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a>
+    <br />
+    <br />
+    <table border="1">
         <thead>
         <tr>
             <th>{% trans 'Month' %}</th>
@@ -35,6 +38,7 @@
             <th>{% trans 'Hourly Rate' %}</th>
             <th>{% trans 'Hours/Month' %}</th>
             <th>{% trans 'Hours/Week' %}</th>
+            <th>{% if current_customer %}{% trans 'Actions' %}{% endif %}</th>
         </tr>
         </thead>
         <tbody>
@@ -47,9 +51,10 @@
                 <td>{{ month.fee|default:'-' }}</td>
                 <td>{{ month.hours|default:'-' }}</td>
                 <td>{{ month.hours_per_week|default:'-' }}</td>
+                <td>{% if current_customer and month.id %}<a href="{% url 'reports:update' month.id %}">{% trans 'Update' %}</a> | <a href="{% url 'reports:delete' month.id %}">{% trans 'Delete' %}</a>{% endif %}</td>
             </tr>
         {% endfor %}
-        <tr><td colspan="7"><hr \></td></tr>
+        <tr><td colspan="8"><hr /></td></tr>
         <tr>
             <th></th>
             <th>{% trans 'Netto' %}</th>
@@ -57,7 +62,7 @@
             <th>{% trans 'VAT' %}</th>
             <th>{% trans 'Hourly Rate' %}</th>
             <th>{% trans 'Hours/Month' %}</th>
-            <th></th>
+            <th colspan="2"></th>
         </tr>
         {% for quarter in year_report.quarters %}
           <tr>
@@ -67,7 +72,7 @@
             <td>{{ quarter.vat|default:'-' }}</td>
             <td>{{ quarter.fee|default:'-' }}</td>
             <td>{{ quarter.hours|default:'-' }}</td>
-            <td></td>
+            <td colspan="2"></td>
           </tr>
         {% endfor %}
         <tr>
@@ -77,9 +82,9 @@
             <th>{% trans 'VAT' %}</th>
             <th>{% trans 'Hourly Rate' %}</th>
             <th>{% trans 'Hours/Month' %}</th>
-            <th></th>
+            <th colspan="2"></th>
         </tr>
-        <tr><td colspan="7"><hr \></td></tr>
+        <tr><td colspan="8"><hr /></td></tr>
         <tr>
             <td>{% trans 'Total' %}</td>
             <td>{{ year_report.netto }}</td>
@@ -87,18 +92,8 @@
             <td>{{ year_report.vat }}</td>
             <td>{{ year_report.fee }}</td>
             <td>{{ year_report.hours }}</td>
-            <td></td>
+            <td colspan="2"></td>
         </tr>
         </tbody>
     </table>
-    <ul>
-        <li><a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a></li>
-    {% if monthreport_list %}
-        {% for report in monthreport_list %}
-            <li><a href="{% url 'reports:update' report.id %}">{{ report }}</a>(<a href="{% url 'reports:delete' report.id %}">{% trans 'Delete' %}</a>)</li>
-        {% endfor %}
-    {% else %}
-        <p>{% trans 'No reports are available.' %}</p>
-    {% endif %}
-    </ul>
 {% endblock body %}

@@ -52,11 +52,13 @@ class ReportsListView(ListView):
         context['customers'] = list({customer['customer__id']: customer for customer in customers}.values())
 
         # Get current customer if there is one
+        customer = None
         if 'customer' in self.kwargs:
-            context['current_customer'] = Customer.objects.get(id=self.kwargs['customer'])
+            customer = Customer.objects.get(id=self.kwargs['customer'])
+            context['current_customer'] = customer
 
         # create year report
-        context['year_report'] = YearReport(self.kwargs['year'], self.object_list)
+        context['year_report'] = YearReport(self.kwargs['year'], self.object_list, customer=customer)
 
         return context
 
@@ -67,7 +69,7 @@ class ChangeReportMixin(object):
     fields = ['customer', 'month', 'year', 'hours', 'fee']
 
     def get_success_url(self):
-        return reverse_lazy('reports:year_report', kwargs={'year': self.object.year})
+        return reverse_lazy('reports:year_report', kwargs={'year': self.object.year, 'customer': self.object.customer.id})
 
 
 class ReportsCreateView(ChangeReportMixin, CreateView):
@@ -103,7 +105,8 @@ class YearReport(AbstractReport):
     This class represents a report for one year. It holds the summed up month and quarter values
     and also the total amount.
     """
-    def __init__(self, year, month_queryset):
+    def __init__(self, year, month_queryset, customer=None):
+        self.customer = customer
         self.year = year
         self.months = self.create_months_from_queryset(month_queryset)
         self.quarters = self.create_quarters()
@@ -112,7 +115,11 @@ class YearReport(AbstractReport):
     def create_months_from_queryset(self, month_queryset):
         months = {i: MonthReport(month=i, year=self.year, hours=0, fee=Decimal(0.00)) for i in range(1, 13)}
         for month_report in month_queryset:
-            months[month_report.month] += month_report
+            if self.customer:
+                months[month_report.month] = month_report
+            else:
+                months[month_report.month] += month_report
+
         return [y for x, y in months.items()]
 
     def calculate_values(self):
