@@ -99,12 +99,10 @@ class MonthReport(models.Model):
         self.hours += other.hours
         return self
 
-    def __radd__(self, other):
-        return self.__add__(other)
-
     def __str__(self):
-        return '{}/{:0>2} - {} - {} Euro - {} '.format(self.year,
+        customer_name = ' - {}'.format(self.customer.name) if hasattr(self, 'customer') else ''
+        return '{}/{:0>2} - {} - {} Euro'.format(self.year,
                                                  self.month,
                                                  _('Netto'),
                                                  self.netto,
-                                                 self.customer.name)
+                                                 customer_name)

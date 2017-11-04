@@ -82,7 +82,23 @@ class ReportsDeleteView(ChangeReportMixin, DeleteView):
     template_name = 'common/confirm_delete.html'
 
 
-class YearReport:
+class AbstractReport:
+    """
+    Abstract class for year and quarter reports.
+    """
+    def __init__(self):
+        self.netto, self.brutto, self.vat, self.fee, self.hours = (Decimal(0.00),)*5
+        self.calculate_values()
+
+    def sum_values(self, other):
+        self.netto += other.netto
+        self.brutto += other.brutto
+        self.vat += other.vat
+        self.fee += other.fee if other.fee else Decimal(0.00)
+        self.hours += other.hours
+
+
+class YearReport(AbstractReport):
     """
     This class represents a report for one year. It holds the summed up month and quarter values
     and also the total amount.
@@ -91,7 +107,7 @@ class YearReport:
         self.year = year
         self.months = self.create_months_from_queryset(month_queryset)
         self.quarters = self.create_quarters()
-        self.netto, self.brutto, self.vat, self.fee, self.hours = self.calculate_values()
+        super().__init__()
 
     def create_months_from_queryset(self, month_queryset):
         months = {i: MonthReport(month=i, year=self.year, hours=0, fee=Decimal(0.00)) for i in range(1, 13)}
@@ -100,22 +116,17 @@ class YearReport:
         return [y for x, y in months.items()]
 
     def calculate_values(self):
-        netto = brutto = vat = fee = hours = Decimal(0.00)
         for quarter in self.quarters:
-            netto += quarter.netto
-            brutto += quarter.brutto
-            vat += quarter.vat
-            fee += quarter.fee if quarter.fee else Decimal(0.00)
-            hours += quarter.hours
-        return netto, brutto, vat, round(fee/12, 2), hours
+            self.sum_values(quarter)
+        self.fee = round(self.fee/12, 2)
 
     def create_quarters(self):
         quarters = []
         for i in range(1, 5):
-            quarters.append(self.Quarter(i, self.months))
+            quarters.append(self.QuarterReport(i, self.months))
         return quarters
 
-    class Quarter:
+    class QuarterReport(AbstractReport):
         """
         This class represents a quarter of the year with all needed summed amounts.
         """
@@ -124,24 +135,15 @@ class YearReport:
                 raise
             self.quarter_number = quarter_number
             self.months = self.filter_quarter(months)
-            self.netto, self.brutto, self.vat, self.fee, self.hours = self.calculate_values()
+            super().__init__()
 
         def filter_quarter(self, months):
             return months[3*self.quarter_number-3:3*self.quarter_number]
 
         def calculate_values(self):
-            netto = Decimal(0.00)
-            brutto = Decimal(0.00)
-            vat = Decimal(0.00)
-            fee = Decimal(0.00)
-            hours = Decimal(0.00)
             for month in self.months:
-                netto += month.netto
-                brutto += month.brutto
-                vat += month.vat
-                fee += month.fee if month.fee else Decimal(0.00)
-                hours += month.hours
-            return netto, brutto, vat, round(fee/3, 2), hours
+                self.sum_values(month)
+            self.fee = round(self.fee/3, 2)
 
         def __str__(self):
             return '{}. {}'.format(self.quarter_number, _('Quarter'))
