@@ -91,6 +91,17 @@ class MonthReport(models.Model):
         except IndexError:
             return None
 
+    def __add__(self, other):
+        if self.fee == 0 or other.fee == 0:
+            self.fee = self.fee + other.fee
+        else:
+            self.fee = (self.fee + other.fee) / 2
+        self.hours += other.hours
+        return self
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
     def __str__(self):
         return '{}/{:0>2} - {} - {} Euro - {} '.format(self.year,
                                                  self.month,

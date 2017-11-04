@@ -25,6 +25,72 @@
         {% endif %}
     {% endfor %}
     <h1>{{ view.kwargs.year }} {% if view.kwargs.customer %}-- {{ current_customer.name }}{% endif %}</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>{% trans 'Month' %}</th>
+            <th>{% trans 'Netto' %}</th>
+            <th>{% trans 'Brutto' %}</th>
+            <th>{% trans 'VAT' %}</th>
+            <th>{% trans 'Hourly Rate' %}</th>
+            <th>{% trans 'Hours/Month' %}</th>
+            <th>{% trans 'Hours/Week' %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for month in year_report.months %}
+            <tr>
+                <td>{{ month.get_month_display }}</td>
+                <td>{{ month.netto|default:'-' }}</td>
+                <td>{{ month.brutto|default:'-' }}</td>
+                <td>{{ month.vat|default:'-' }}</td>
+                <td>{{ month.fee|default:'-' }}</td>
+                <td>{{ month.hours|default:'-' }}</td>
+                <td>{{ month.hours_per_week|default:'-' }}</td>
+            </tr>
+        {% endfor %}
+        <tr><td colspan="7"><hr \></td></tr>
+        <tr>
+            <th></th>
+            <th>{% trans 'Netto' %}</th>
+            <th>{% trans 'Brutto' %}</th>
+            <th>{% trans 'VAT' %}</th>
+            <th>{% trans 'Hourly Rate' %}</th>
+            <th>{% trans 'Hours/Month' %}</th>
+            <th></th>
+        </tr>
+        {% for quarter in year_report.quarters %}
+          <tr>
+            <td>{{ quarter }}</td>
+            <td>{{ quarter.netto|default:'-' }}</td>
+            <td>{{ quarter.brutto|default:'-' }}</td>
+            <td>{{ quarter.vat|default:'-' }}</td>
+            <td>{{ quarter.fee|default:'-' }}</td>
+            <td>{{ quarter.hours|default:'-' }}</td>
+            <td></td>
+          </tr>
+        {% endfor %}
+        <tr>
+            <th>{{ year.year }}</th>
+            <th>{% trans 'Netto' %}</th>
+            <th>{% trans 'Brutto' %}</th>
+            <th>{% trans 'VAT' %}</th>
+            <th>{% trans 'Hourly Rate' %}</th>
+            <th>{% trans 'Hours/Month' %}</th>
+            <th></th>
+        </tr>
+        <tr><td colspan="7"><hr \></td></tr>
+        <tr>
+            <td>{% trans 'Total' %}</td>
+            <td>{{ year_report.netto }}</td>
+            <td>{{ year_report.brutto }}</td>
+            <td>{{ year_report.vat }}</td>
+            <td>{{ year_report.fee }}</td>
+            <td>{{ year_report.hours }}</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
     <ul>
         <li><a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a></li>
     {% if monthreport_list %}
