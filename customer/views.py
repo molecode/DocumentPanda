@@ -16,14 +16,14 @@ class CustomerDetailView(DetailView):
 class CustomerCreateView(CreateView):
     model = Customer
     template_name = 'common/form.html'
-    fields = ['name', 'customer_id', 'default_fee', 'active']
+    fields = ['name', 'customer_id', 'default_fee']
     success_url = reverse_lazy('customer:list')
 
 
 class CustomerUpdateView(UpdateView):
     model = Customer
     template_name = 'common/form.html'
-    fields = ['name', 'customer_id', 'default_fee', 'active']
+    fields = ['name', 'customer_id', 'default_fee']
     success_url = reverse_lazy('customer:list')
 
 
