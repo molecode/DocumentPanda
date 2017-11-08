@@ -1,3 +1,4 @@
+from django import forms
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -18,6 +19,12 @@ class CustomerCreateView(CreateView):
     template_name = 'common/form.html'
     fields = ['name', 'customer_id', 'default_fee']
     success_url = reverse_lazy('customer:list')
+
+    def get_form(self, form_class=None):
+        form = super(CustomerCreateView, self).get_form(form_class)
+        for _, form_field in form.fields.items():
+            form_field.widget = forms.TextInput(attrs={'class': 'w3-input'})
+        return form
 
 
 class CustomerUpdateView(UpdateView):
