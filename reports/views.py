@@ -1,13 +1,22 @@
+import csv
 from decimal import Decimal
+from io import TextIOWrapper
+
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db import IntegrityError
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+from django.views import View
 from django.views.generic import ListView, RedirectView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 from customer.models import Customer
 
 from .models import MonthReport
+from .forms import UploadForm
 
 
 class ReportsRedirectview(RedirectView):
@@ -21,6 +30,78 @@ class ReportsRedirectview(RedirectView):
         last_report = MonthReport.get_last_report()
         last_year = last_report.year if last_report else timezone.now().year
         return reverse_lazy('reports:year_report', kwargs={'year': last_year})
+
+
+class ReportImportView(SuccessMessageMixin, FormView):
+    template_name = 'reports/import_reports.html'
+    form_class = UploadForm
+    success_url = reverse_lazy('reports:index')
+
+    def form_valid(self, form):
+        uploaded_file = TextIOWrapper(form.cleaned_data['file'].file, encoding='ascii')
+        csv_file = csv.DictReader(uploaded_file)
+        warnings = []
+        errors = []
+        counter = 0
+        for row in csv_file:
+            try:
+                customer = Customer.objects.get(id=row['customer'])
+                month = row['month']
+                year = row['year']
+                hours = row['hours']
+                fee = row['fee']
+                month_report = MonthReport(customer=customer, month=month, year=year, hours=hours, fee=fee)
+                month_report.save()
+                counter += 1
+            except IntegrityError:
+                warnings.append('{} {} {}/{} (line: {})'.format(customer.name,
+                                                                _('has an existing report for'),
+                                                                row['month'],
+                                                                row['year'],
+                                                                csv_file.line_num))
+            except Customer.DoesNotExist:
+                errors.append('{} {} (line: {})'.format(_('There is no customer with ID'),
+                                                        row['customer'],
+                                                        csv_file.line_num))
+        if counter > 0:
+            messages.success(self.request, _('{} report(s) successfully imported.'.format(counter)))
+        if warnings:
+            messages.warning(self.request, self.get_html_list(warnings))
+        if errors:
+            messages.error(self.request, self.get_html_list(errors))
+        return super(ReportImportView, self).form_valid(form)
+
+    @staticmethod
+    def get_html_list(message_list):
+        if len(message_list) > 1:
+            html_snippet = '<ul>'
+            for message in message_list:
+                html_snippet += '<li>{}</li>'.format(message)
+            html_snippet += '</ul>'
+        else:
+            html_snippet = message_list[0]
+        return html_snippet
+
+# class ExportCSV(View):
+#     """
+#     Export the given reports as csv.
+#     """
+#     def get(self, *args, **kwargs):
+#         reports = MonthReport.objects.select_related('customer').filter(year=self.kwargs['year'])
+#         file_name = '{}_{}'.format(kwargs['year'], _('Yearreport'))
+#
+#         response = HttpResponse(content_type='text/csv')
+#         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(file_name)
+#
+#         writer = csv.writer(response)
+#         writer.writerow([_('Month'), _('Netto'), _('Brutto'), _('VAT'), _('Hourly Rate'),
+#                          _('Hours per Month'), _('Hours per Week')])
+#         year_report = YearReport(self.kwargs['year'], reports)
+#         for month in year_report.months:
+#             writer.writerow([month.get_month_display(), month.netto, month.brutto,
+#                              month.vat, month.fee, month.hours, month.hours_per_week()])
+#
+#         return response
 
 
 class ReportsListView(ListView):

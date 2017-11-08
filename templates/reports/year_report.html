@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% block messages %}
+  {% if messages %}
+    {% for message in messages %}
+          {{ message|safe }}
+    {% endfor %}
+    <br />
+  {% endif %}
+{% endblock messages %}
+
 {% block body %}
     {% for year in years %}
         {% if year == view.kwargs.year %}
@@ -26,6 +35,7 @@
     {% endfor %}
     <h1>{{ view.kwargs.year }} {% if view.kwargs.customer %}-- {{ current_customer.name }}{% endif %}</h1>
     <a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a>
+    <a href="{% url 'reports:import' %}">{% trans 'Import reports' %}</a>
     <br />
     <br />
     <table border="1">

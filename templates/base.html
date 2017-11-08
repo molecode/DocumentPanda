@@ -12,8 +12,17 @@
     </head>
 
     <body>
+      {% block messages %}
+          {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <br />
+          {% endif %}
+      {% endblock messages %}
+
       {% block body %}
-      {% endblock %}
+      {% endblock body %}
 {#      <script src="{% static 'js/jquery.min.js' %}"></script>#}
 {#      <script src="{% static 'js/kube.min.js' %}"></script>#}
     </body>
