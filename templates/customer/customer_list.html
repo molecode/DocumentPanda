@@ -2,14 +2,35 @@
 {% load i18n %}
 
 {% block body %}
-    <a href="{% url 'customer:add' %}">{% trans 'Add customer' %}</a>
-    {% if customer_list %}
-        <ul>
-        {% for customer in customer_list %}
-            <li><a href="{% url 'customer:detail' customer.id %}">{{ customer.customer_id }} - {{ customer.name }}</a>(<a href="{% url 'customer:update' customer.id %}">{% trans 'Update' %}</a>, <a href="{% url 'customer:delete' customer.id %}">{% trans 'Delete' %}</a>)</li>
-        {% endfor %}
-        </ul>
-    {% else %}
+  <div class="w3-container">
+    <p>
+      <a href="{% url 'customer:add' %}" class="w3-button w3-teal">{% trans 'Add customer' %}</a>
+    </p>
+      {% if customer_list %}
+          <ul class="w3-ul w3-card-4" style="width:50%">
+            {% for customer in customer_list %}
+                <li>
+                  <div class="w3-display-container">
+                    <strong>{{ customer.customer_id }}</strong> {{ customer.name }}
+                    <div class="w3-display-right">
+                      <a href="{% url 'customer:update' customer.id %}">{% trans 'Update' %}</a> | <a href="{% url 'customer:delete' customer.id %}">{% trans 'Delete' %}</a>
+                    </div>
+                  </div>
+                </li>
+            {% endfor %}
+          </ul>
+      {% else %}
         <p>{% trans 'No customer are available.' %}</p>
-    {% endif %}
+      {% endif %}
+  </div>
+
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <p>Some text in the Modal..</p>
+        <p>Some text in the Modal..</p>
+      </div>
+    </div>
+  </div>
 {% endblock body %}

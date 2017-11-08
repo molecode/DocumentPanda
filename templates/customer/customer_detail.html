@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block body %}
+  <div class="w3-container">
     <table>
         <tr>
             <td>{% trans 'Name' %}</td>
@@ -24,4 +25,5 @@
             <td>{{ customer.updated_at }}</td>
         </tr>
     </table>
+  </div>
 {% endblock body %}
