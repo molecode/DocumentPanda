@@ -14,20 +14,22 @@ class CustomerDetailView(DetailView):
     model = Customer
 
 
-class CustomerCreateView(CreateView):
-    model = Customer
-    template_name = 'common/form.html'
-    fields = ['name', 'customer_id', 'default_fee']
-    success_url = reverse_lazy('customer:list')
-
+class ChangeViewW3Mixin(object):
     def get_form(self, form_class=None):
-        form = super(CustomerCreateView, self).get_form(form_class)
+        form = super(ChangeViewW3Mixin, self).get_form(form_class)
         for _, form_field in form.fields.items():
             form_field.widget = forms.TextInput(attrs={'class': 'w3-input'})
         return form
 
 
-class CustomerUpdateView(UpdateView):
+class CustomerCreateView(ChangeViewW3Mixin, CreateView):
+    model = Customer
+    template_name = 'common/form.html'
+    fields = ['name', 'customer_id', 'default_fee']
+    success_url = reverse_lazy('customer:list')
+
+
+class CustomerUpdateView(ChangeViewW3Mixin, UpdateView):
     model = Customer
     template_name = 'common/form.html'
     fields = ['name', 'customer_id', 'default_fee']

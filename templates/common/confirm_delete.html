@@ -2,8 +2,10 @@
 {% load i18n %}
 
 {% block body %}
+  <div class="w3-content">
     <form action="" method="post">{% csrf_token %}
         <p>{% trans 'Are you sure you want to delete' %} "{{ object }}"?</p>
-        <input type="submit" value="{% trans 'Confirm' %}" />
+        <input type="submit" value="{% trans 'Confirm' %}" class="w3-button w3-red" />
     </form>
+  </div>
 {% endblock body %}
