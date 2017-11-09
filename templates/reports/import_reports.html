@@ -2,9 +2,11 @@
 {% load i18n %}
 
 {% block body %}
+  <div class="w3-content">
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="{% trans 'Upload' %}" />
+        <input type="submit" value="{% trans 'Upload' %}"  class="w3-button w3-green"/>
     </form>
+  </div>
 {% endblock body %}

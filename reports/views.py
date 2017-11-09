@@ -2,6 +2,7 @@ import csv
 from decimal import Decimal
 from io import TextIOWrapper
 
+from django import forms
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
 from django.http import HttpResponse

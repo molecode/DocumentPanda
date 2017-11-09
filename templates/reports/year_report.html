@@ -11,34 +11,42 @@
 {% endblock messages %}
 
 {% block body %}
-    {% for year in years %}
-        {% if year == view.kwargs.year %}
-            {{ year }}
-        {% else %}
-            <a href="{% url 'reports:year_report' year %}">{{ year }}</a>
-        {% endif %}
-    {% endfor %}
-    <br />
-    {% if customers %}
+  <div class="w3-content">
+    <div class="w3-bar w3-teal">
+      <a href="#" class="w3-bar-item w3-button"></a>
+      <div class="w3-dropdown-hover">
+        <button class="w3-button">{{ view.kwargs.year }} <i class="fa fa-caret-down"></i></button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          {% for year in years %}
+            {% if year != view.kwargs.year %}
+              <a href="{% url 'reports:year_report' year %}" class="w3-bar-item w3-button">{{ year }}</a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% if customers %}
+      <div class="w3-dropdown-hover">
         {% if view.kwargs.customer %}
-            <a href="{% url 'reports:year_report' view.kwargs.year %}">{% trans 'All' %}</a>
+          <button class="w3-button">{{ current_customer.name }} <i class="fa fa-caret-down"></i></button>
         {% else %}
-            {% trans 'All' %}
+          <button class="w3-button">{% trans 'All customer' %} <i class="fa fa-caret-down"></i></button>
         {% endif %}
-    {% endif %}
-    {% for customer in customers|dictsort:'customer__name' %}
-        {% if current_customer.name == customer.customer__name %}
-            {{ customer.customer__name }}
-        {% else %}
-            <a href="{% url 'reports:year_report' view.kwargs.year customer.customer__id %}">{{ customer.customer__name }}</a>
-        {% endif %}
-    {% endfor %}
-    <h1>{{ view.kwargs.year }} {% if view.kwargs.customer %}-- {{ current_customer.name }}{% endif %}</h1>
-    <a href="{% url 'reports:add' %}">{% trans 'Add report' %}</a>
-    <a href="{% url 'reports:import' %}">{% trans 'Import reports' %}</a>
-    <br />
-    <br />
-    <table border="1">
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          {% if view.kwargs.customer %}
+            <a href="{% url 'reports:year_report' view.kwargs.year %}" class="w3-bar-item w3-button">{% trans 'All customer' %}</a>
+          {% endif %}
+          {% for customer in customers|dictsort:'customer__name' %}
+            {% if current_customer.name != customer.customer__name %}
+                <a href="{% url 'reports:year_report' view.kwargs.year customer.customer__id %}" class="w3-bar-item w3-button">{{ customer.customer__name }}</a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      <a href="{% url 'reports:import' %}" class="w3-bar-item w3-button w3-right">{% trans 'Import reports' %}</a>
+      <a href="{% url 'reports:add' %}" class="w3-bar-item w3-button w3-right">{% trans 'Add report' %}</a>
+    </div>
+    <table class="w3-table-all w3-card-4 w3-section">
         <thead>
         <tr>
             <th>{% trans 'Month' %}</th>
@@ -64,7 +72,7 @@
                 <td>{% if current_customer and month.id %}<a href="{% url 'reports:update' month.id %}">{% trans 'Update' %}</a> | <a href="{% url 'reports:delete' month.id %}">{% trans 'Delete' %}</a>{% endif %}</td>
             </tr>
         {% endfor %}
-        <tr><td colspan="8"><hr /></td></tr>
+        <thead>
         <tr>
             <th></th>
             <th>{% trans 'Netto' %}</th>
@@ -74,6 +82,7 @@
             <th>{% trans 'Hours/Month' %}</th>
             <th colspan="2"></th>
         </tr>
+        </thead>
         {% for quarter in year_report.quarters %}
           <tr>
             <td>{{ quarter }}</td>
@@ -85,6 +94,7 @@
             <td colspan="2"></td>
           </tr>
         {% endfor %}
+        <thead>
         <tr>
             <th>{{ year.year }}</th>
             <th>{% trans 'Netto' %}</th>
@@ -94,9 +104,9 @@
             <th>{% trans 'Hours/Month' %}</th>
             <th colspan="2"></th>
         </tr>
-        <tr><td colspan="8"><hr /></td></tr>
+        </thead>
         <tr>
-            <td>{% trans 'Total' %}</td>
+            <td><strong>{% trans 'Total' %}</strong></td>
             <td>{{ year_report.netto }}</td>
             <td>{{ year_report.brutto }}</td>
             <td>{{ year_report.vat }}</td>
@@ -106,4 +116,5 @@
         </tr>
         </tbody>
     </table>
+  </div>
 {% endblock body %}
