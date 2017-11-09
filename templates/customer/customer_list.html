@@ -2,10 +2,9 @@
 {% load i18n %}
 
 {% block body %}
-  <div class="w3-container">
-    <p>
+  <div class="w3-content w3-section">
       {% if customer_list %}
-          <ul class="w3-ul w3-card-4" style="width:50%">
+          <ul class="w3-ul w3-card-4">
             <li><a href="{% url 'customer:add' %}" class="w3-button w3-teal">{% trans 'Add customer' %}</a></li>
             {% for customer in customer_list %}
                 <li>
@@ -21,6 +20,5 @@
       {% else %}
         <p>{% trans 'No customer are available.' %}</p>
       {% endif %}
-    </p>
   </div>
 {% endblock body %}
