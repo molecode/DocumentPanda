@@ -6,6 +6,7 @@
     <form action="" method="post">{% csrf_token %}
         <p>{% trans 'Are you sure you want to delete' %} "{{ object }}"?</p>
         <input type="submit" value="{% trans 'Confirm' %}" class="w3-button w3-red" />
+        <a href="{{ request.META.HTTP_REFERER }}" class="w3-button w3-grey">{% trans 'Back' %}</a>
     </form>
   </div>
 {% endblock body %}

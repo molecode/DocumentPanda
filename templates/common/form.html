@@ -14,7 +14,10 @@
           {{ f }}
           <label for="{{ f.id_for_label }}">{{ f.label }}</label>
         {% endfor %}
-        <p><input type="submit" value="{% trans 'Save' %}" class="w3-button w3-green" /></p>
+        <p>
+            <input type="submit" value="{% trans 'Save' %}" class="w3-button w3-green" />
+            <a href="{{ request.META.HTTP_REFERER }}" class="w3-button w3-grey">{% trans 'Back' %}</a>
+        </p>
     </form>
   </div>
 {% endblock body %}
