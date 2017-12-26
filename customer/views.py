@@ -22,21 +22,20 @@ class FormViewW3Mixin(object):
         return form
 
 
-class CustomerCreateView(FormViewW3Mixin, CreateView):
+class ChangeCustomerMixin(FormViewW3Mixin):
+    """Mixin for every modifing CustomerView: create, update, delete."""
     model = Customer
-    template_name = 'common/form.html'
-    fields = ['name', 'customer_id', 'default_fee']
+    fields = ['name', 'customer_id', 'default_fee', 'currency']
     success_url = reverse_lazy('customer:list')
 
 
-class CustomerUpdateView(FormViewW3Mixin, UpdateView):
-    model = Customer
+class CustomerCreateView(ChangeCustomerMixin, CreateView):
     template_name = 'common/form.html'
-    fields = ['name', 'customer_id', 'default_fee']
-    success_url = reverse_lazy('customer:list')
 
 
-class CustomerDeleteView(DeleteView):
-    model = Customer
+class CustomerUpdateView(ChangeCustomerMixin, UpdateView):
+    template_name = 'common/form.html'
+
+
+class CustomerDeleteView(ChangeCustomerMixin, DeleteView):
     template_name = 'common/confirm_delete.html'
-    success_url = reverse_lazy('customer:list')

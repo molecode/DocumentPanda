@@ -10,6 +10,7 @@ class Customer(models.Model):
     customer_id = models.IntegerField(_('Customer ID'), unique=True)
     default_fee = models.DecimalField(_('Project fee per hour'), max_digits=5, decimal_places=2)
     active = models.BooleanField(default=True)
+    currency = models.CharField(_('Currency'), max_length=10, default='€')
 
     class Meta:
         ordering = ['customer_id']

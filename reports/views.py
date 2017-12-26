@@ -146,7 +146,7 @@ class ReportsListView(ListView):
         return context
 
 
-class ChangeReportMixin(FormViewW3Mixin, object):
+class ChangeReportMixin(FormViewW3Mixin):
     """Mixin for every modify ReportView: create, update, delete."""
     model = MonthReport
     fields = ['customer', 'month', 'year', 'hours', 'fee']
