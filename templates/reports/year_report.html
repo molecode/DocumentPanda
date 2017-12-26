@@ -1,15 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block messages %}
-  {% if messages %}
-    {% for message in messages %}
-          {{ message|safe }}
-    {% endfor %}
-    <br />
-  {% endif %}
-{% endblock messages %}
-
 {% block body %}
   <div class="w3-content">
     <div class="w3-bar w3-teal">

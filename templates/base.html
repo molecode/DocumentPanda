@@ -23,7 +23,17 @@
       {% block messages %}
           {% if messages %}
             {% for message in messages %}
-                {{ message }}
+                {% if message.tags == 'success' %}
+                  <div class="w3-content w3-panel w3-pale-green w3-display-container">
+                {% elif message.tags == 'error' %}
+                  <div class="w3-content w3-panel w3-pale-red w3-display-container">
+                {% else %}
+                  <div class="w3-content w3-panel w3-pale-yellow w3-display-container">
+                {% endif %}
+                    <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <p>{{ message.tags|capfirst }}:</p>
+                    <p>{{ message|safe }}</p>
+                </div>
             {% endfor %}
             <br />
           {% endif %}
