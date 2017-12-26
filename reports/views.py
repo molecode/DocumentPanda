@@ -45,7 +45,7 @@ class ReportImportView(SuccessMessageMixin, FormView):
         total_counter = 0
         for row in csv_file:
             try:
-                total_counter += 0
+                total_counter += 1
                 customer = Customer.objects.get(customer_id=row['customer'])
                 month = row['month']
                 year = row['year']
@@ -65,7 +65,7 @@ class ReportImportView(SuccessMessageMixin, FormView):
                                                         row['customer'],
                                                         csv_file.line_num))
         if success_counter > 0:
-            messages.success(self.request, _('{} of {} report(s) successfully imported.'.format(success_counter,
+            messages.success(self.request, _('{} of {} report(s) successfully imported.<br />'.format(success_counter,
                                                                                                 total_counter)))
         if warnings:
             messages.warning(self.request, self.get_html_list(warnings))
