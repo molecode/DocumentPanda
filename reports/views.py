@@ -2,19 +2,17 @@ import csv
 from decimal import Decimal
 from io import TextIOWrapper
 
-from django import forms
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
-from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.views import View
 from django.views.generic import ListView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
 
 from customer.models import Customer
+from customer.views import FormViewW3Mixin
 
 from .models import MonthReport
 from .forms import UploadForm
@@ -145,7 +143,7 @@ class ReportsListView(ListView):
         return context
 
 
-class ChangeReportMixin(object):
+class ChangeReportMixin(FormViewW3Mixin, object):
     """Mixin for every modify ReportView: create, update, delete."""
     model = MonthReport
     fields = ['customer', 'month', 'year', 'hours', 'fee']
