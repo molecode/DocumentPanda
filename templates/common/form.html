@@ -17,7 +17,7 @@
             {% endfor %}
             <p>
                 <input type="submit" value="{% trans 'Save' %}" class="w3-button w3-green" />
-                {% if request.META.HTTP_REFFERER %}
+                {% if request.META.HTTP_REFERER %}
                     <a href="{{ request.META.HTTP_REFERER }}" class="w3-button w3-grey">{% trans 'Back' %}</a>
                 {% else %}
                     <a href="{% url 'reports:index' %}" class="w3-button w3-grey">{% trans 'Back' %}</a>
