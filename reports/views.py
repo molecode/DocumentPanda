@@ -41,17 +41,19 @@ class ReportImportView(SuccessMessageMixin, FormView):
         csv_file = csv.DictReader(uploaded_file)
         warnings = []
         errors = []
-        counter = 0
+        success_counter = 0
+        total_counter = 0
         for row in csv_file:
             try:
-                customer = Customer.objects.get(id=row['customer'])
+                total_counter += 0
+                customer = Customer.objects.get(customer_id=row['customer'])
                 month = row['month']
                 year = row['year']
                 hours = row['hours']
                 fee = row['fee']
                 month_report = MonthReport(customer=customer, month=month, year=year, hours=hours, fee=fee)
                 month_report.save()
-                counter += 1
+                success_counter += 1
             except IntegrityError:
                 warnings.append('{} {} {}/{} (line: {})'.format(customer.name,
                                                                 _('has an existing report for'),
@@ -62,8 +64,9 @@ class ReportImportView(SuccessMessageMixin, FormView):
                 errors.append('{} {} (line: {})'.format(_('There is no customer with ID'),
                                                         row['customer'],
                                                         csv_file.line_num))
-        if counter > 0:
-            messages.success(self.request, _('{} report(s) successfully imported.'.format(counter)))
+        if success_counter > 0:
+            messages.success(self.request, _('{} of {} report(s) successfully imported.'.format(success_counter,
+                                                                                                total_counter)))
         if warnings:
             messages.warning(self.request, self.get_html_list(warnings))
         if errors:
@@ -78,7 +81,7 @@ class ReportImportView(SuccessMessageMixin, FormView):
                 html_snippet += '<li>{}</li>'.format(message)
             html_snippet += '</ul>'
         else:
-            html_snippet = message_list[0]
+            html_snippet = message_list[0] + '<br />'
         return html_snippet
 
 # class ExportCSV(View):
