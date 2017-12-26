@@ -6,7 +6,14 @@
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="{% trans 'Upload' %}"  class="w3-button w3-green"/>
+        <p>
+            <input type="submit" value="{% trans 'Upload' %}" class="w3-button w3-green" />
+            {% if request.META.HTTP_REFFERER %}
+                <a href="{{ request.META.HTTP_REFERER }}" class="w3-button w3-grey">{% trans 'Back' %}</a>
+            {% else %}
+                <a href="{% url 'reports:index' %}" class="w3-button w3-grey">{% trans 'Back' %}</a>
+            {% endif %}
+        </p>
     </form>
   </div>
 {% endblock body %}
