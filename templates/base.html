@@ -7,11 +7,8 @@
       <title>{% block title %}DocumentPanda{% endblock %}</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-
-      <!-- Kube CSS -->
-{#      <link rel="stylesheet" href="{% static 'css/kube.min.css' %}">#}
-      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     </head>
 
     <body>
@@ -34,7 +31,5 @@
 
       {% block body %}
       {% endblock body %}
-{#      <script src="{% static 'js/jquery.min.js' %}"></script>#}
-{#      <script src="{% static 'js/kube.min.js' %}"></script>#}
     </body>
   </html>

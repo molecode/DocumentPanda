@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
     url(r'^customer/', include('customer.urls', namespace='customer')),
     url(r'^reports/', include('reports.urls', namespace='reports')),
     url(r'^admin/', admin.site.urls),
-    # url(r'^$', views.index, name='index'),
+    # url(r'^$', TemplateView.as_view(template_name='base.html'), name='index'),
+    url(r'^$', RedirectView.as_view(url='reports/'), name='index'),
 ]
 
 if settings.DEBUG:
