@@ -25,7 +25,7 @@ class FormViewW3Mixin(object):
 class ChangeCustomerMixin(FormViewW3Mixin):
     """Mixin for every modifing CustomerView: create, update, delete."""
     model = Customer
-    fields = ['name', 'customer_id', 'default_fee', 'currency']
+    fields = ['name', 'customer_id', 'default_fee']
     success_url = reverse_lazy('customer:list')
 
 
