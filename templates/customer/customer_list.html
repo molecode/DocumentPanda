@@ -3,9 +3,10 @@
 
 {% block body %}
   <div class="w3-content w3-section">
-      {% if customer_list %}
+
           <ul class="w3-ul w3-card-4">
             <li><a href="{% url 'customer:add' %}" class="w3-button w3-teal">{% trans 'Add customer' %}</a></li>
+            {% if customer_list %}
             {% for customer in customer_list %}
                 <li>
                   <div class="w3-display-container">
@@ -16,9 +17,9 @@
                   </div>
                 </li>
             {% endfor %}
+            {% else %}
+                <li>{% trans 'No customer are available.' %}</li>
+            {% endif %}
           </ul>
-      {% else %}
-        <p>{% trans 'No customer are available.' %}</p>
-      {% endif %}
   </div>
 {% endblock body %}
