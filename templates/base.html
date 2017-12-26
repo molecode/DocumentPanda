@@ -14,7 +14,7 @@
     <body>
       {% block menu %}
         <div class="w3-bar w3-light-grey">
-          <a href="#" class="w3-bar-item w3-button w3-mobile">Home</a>
+          <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-mobile">Home</a>
           <a href="{% url 'reports:index' %}" class="w3-bar-item w3-button w3-mobile {% if '/reports/' in request.path %}w3-grey{% endif %}">{% trans 'Reports' %}</a>
           <a href="{% url 'customer:list' %}" class="w3-bar-item w3-button w3-mobile {% if '/customer/' in request.path %}w3-grey{% endif %}">{% trans 'Customer' %}</a>
         </div>
