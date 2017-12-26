@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'year/(?P<year>[0-9]+)/$', views.ReportsListView.as_view(), name='year_report'),
     url(r'year/(?P<year>[0-9]+)/(?P<customer>[0-9]+)/$', views.ReportsListView.as_view(), name='year_report'),
 
-    url(r'^$', views.ReportsRedirectview.as_view(), name='index'),
+    url(r'^$', views.ReportsRedirectView.as_view(), name='index'),
 ]
 

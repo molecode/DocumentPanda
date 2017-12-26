@@ -8,7 +8,37 @@ from django.utils.translation import ugettext_lazy as _
 from customer.models import Customer
 
 
-class MonthReport(models.Model):
+class CurrencyMixin(object):
+    """Mixin for getting values with currency"""
+    def value_with_currency(self, value):
+        val = getattr(self, value)
+        if val:
+            return '{} {}'.format(val, MonthReport.CURRENCY)
+        else:
+            return val
+
+    @property
+    def netto_with_currency(self):
+        """Get the netto with currency."""
+        return self.value_with_currency('netto')
+
+    @property
+    def vat_with_currency(self):
+        """Get the VAT with currency."""
+        return self.value_with_currency('vat')
+
+    @property
+    def brutto_with_currency(self):
+        """Get the brutto with currency."""
+        return self.value_with_currency('brutto')
+
+    @property
+    def fee_with_currency(self):
+        """Get the fee with currency."""
+        return self.value_with_currency('fee')
+
+
+class MonthReport(CurrencyMixin, models.Model):
     """
     This model holds the needed information for a monthly report.
     The needed information are only the hours of work and the fee of the project.
@@ -29,6 +59,9 @@ class MonthReport(models.Model):
         (11, _('November')),
         (12, _('December')),
     )
+
+    # TODO -- timo -- Should be not constant
+    CURRENCY = '€'
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,7 +113,7 @@ class MonthReport(models.Model):
         """Get the brutto amount of money of this month."""
         return self.netto + self.vat
 
-    def hours_per_week(self): #TODO -- 4.33 durch tatsaechliche Wochenanzahl des Monats ersetzen
+    def hours_per_week(self): #TODO -- timo -- 4.33 durch tatsaechliche Wochenanzahl des Monats ersetzen
         """Get the hours of work of this month."""
         return round(self.hours / Decimal(4.33), 2)
 

@@ -14,11 +14,11 @@ from django.contrib import messages
 from customer.models import Customer
 from customer.views import FormViewW3Mixin
 
-from .models import MonthReport
+from .models import MonthReport, CurrencyMixin
 from .forms import UploadForm
 
 
-class ReportsRedirectview(RedirectView):
+class ReportsRedirectView(RedirectView):
     """
     Redirects to the year with the latest reports.
     Normally this should be the current year.
@@ -167,7 +167,7 @@ class ReportsDeleteView(ChangeReportMixin, DeleteView):
     template_name = 'common/confirm_delete.html'
 
 
-class AbstractReport:
+class AbstractReport(CurrencyMixin):
     """
     Abstract class for year and quarter reports.
     """
@@ -181,7 +181,6 @@ class AbstractReport:
         self.vat += other.vat
         self.fee += other.fee if other.fee else Decimal(0.00)
         self.hours += other.hours
-
 
 class YearReport(AbstractReport):
     """

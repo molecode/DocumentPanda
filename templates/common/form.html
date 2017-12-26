@@ -12,8 +12,8 @@
                   <p>{{ f.errors }}</p>
                 </div>
               {% endif %}
+              <label for="{{ f.id_for_label }}">{{ f.label }}:</label>
               {{ f }}
-              <label for="{{ f.id_for_label }}">{{ f.label }}</label>
             {% endfor %}
             <p>
                 <input type="submit" value="{% trans 'Save' %}" class="w3-button w3-green" />
