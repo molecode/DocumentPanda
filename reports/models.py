@@ -79,7 +79,7 @@ class MonthReport(CurrencyMixin, models.Model):
                                 choices=MONTH_CHOICES,
                                 default=datetime.datetime.now().month)
     year = models.IntegerField(_('Year'),
-                               choices=[(year, year) for year in range(2012, datetime.datetime.now().year+1)],
+                               choices=[(year, year) for year in range(2000, datetime.datetime.now().year+1)],
                                default=datetime.datetime.now().year)
     hours = models.DecimalField(_('Working hours'),
                                 max_digits=6,
