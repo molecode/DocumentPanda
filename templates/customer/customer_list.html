@@ -3,23 +3,30 @@
 
 {% block body %}
   <div class="w3-content w3-section">
-
-          <ul class="w3-ul w3-card-4">
-            <li><a href="{% url 'customer:add' %}" class="w3-button w3-teal">{% trans 'Add customer' %}</a></li>
+            <a href="{% url 'customer:add' %}" class="w3-button w3-teal">{% trans 'Add customer' %}</a>
             {% if customer_list %}
-            {% for customer in customer_list %}
-                <li>
-                  <div class="w3-display-container">
-                    <strong>{{ customer.customer_id }}</strong> {{ customer.name }}
-                    <div class="w3-display-right">
-                      <a href="{% url 'customer:update' customer.id %}">{% trans 'Update' %}</a> | <a href="{% url 'customer:delete' customer.id %}">{% trans 'Delete' %}</a>
-                    </div>
-                  </div>
-                </li>
-            {% endfor %}
+              <table class="w3-table-all w3-card-4 w3-section">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>{% trans 'Customer name' %}</th>
+                    <th>{% trans 'Customer ID' %}</th>
+                    <th>{% trans 'Actions' %}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for customer in customer_list %}
+                  <tr>
+                    <td>{{ forloop.counter}}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.customer_id }}</td>
+                    <td><a href="{% url 'customer:update' customer.id %}">{% trans 'Update' %}</a> | <a href="{% url 'customer:delete' customer.id %}">{% trans 'Delete' %}</a></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
             {% else %}
-                <li>{% trans 'No customer are available.' %}</li>
+                <p>{% trans 'No customers are available.' %}</li></p>
             {% endif %}
-          </ul>
   </div>
 {% endblock body %}
