@@ -40,69 +40,69 @@
     <table class="w3-table-all w3-card-4 w3-section">
         <thead>
         <tr>
-            <th>{% trans 'Month' %}</th>
-            <th>{% trans 'Netto' %}</th>
-            <th>{% trans 'Brutto' %}</th>
-            <th>{% trans 'VAT' %}</th>
-            <th>{% trans 'Hourly Rate' %}</th>
-            <th>{% trans 'Hours/Month' %}</th>
-            <th>{% trans 'Hours/Week' %}</th>
-            <th>{% if current_customer %}{% trans 'Actions' %}{% endif %}</th>
+            <th style="text-align: center">{% trans 'Month' %}</th>
+            <th style="text-align: center">{% trans 'Netto' %}</th>
+            <th style="text-align: center">{% trans 'Brutto' %}</th>
+            <th style="text-align: center">{% trans 'VAT' %}</th>
+            <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
+            <th style="text-align: center">{% trans 'Hours/Month' %}</th>
+            <th style="text-align: center">{% trans 'Hours/Week' %}</th>
+            <th style="text-align: center">{% if current_customer %}{% trans 'Actions' %}{% endif %}</th>
         </tr>
         </thead>
         <tbody>
         {% for month in year_report.months %}
             <tr>
                 <td>{{ month.get_month_display }}</td>
-                <td>{{ month.netto_with_currency|default:'-' }}</td>
-                <td>{{ month.brutto_with_currency|default:'-' }}</td>
-                <td>{{ month.vat_with_currency|default:'-' }}</td>
-                <td>{{ month.fee_with_currency|default:'-' }}</td>
-                <td>{{ month.hours|default:'-' }}</td>
-                <td>{{ month.hours_per_week|default:'-' }}</td>
+                <td style="text-align: right">{{ month.netto_with_currency|default:'-' }}</td>
+                <td style="text-align: right">{{ month.brutto_with_currency|default:'-' }}</td>
+                <td style="text-align: right">{{ month.vat_with_currency|default:'-' }}</td>
+                <td style="text-align: right">{{ month.fee_with_currency|default:'-' }}</td>
+                <td style="text-align: right">{{ month.hours|default:'-' }}</td>
+                <td style="text-align: right">{{ month.hours_per_week|default:'-' }}</td>
                 <td>{% if current_customer and month.id %}<a href="{% url 'reports:update' month.id %}">{% trans 'Update' %}</a> | <a href="{% url 'reports:delete' month.id %}">{% trans 'Delete' %}</a>{% endif %}</td>
             </tr>
         {% endfor %}
         <thead>
         <tr>
             <th></th>
-            <th>{% trans 'Netto' %}</th>
-            <th>{% trans 'Brutto' %}</th>
-            <th>{% trans 'VAT' %}</th>
-            <th>{% trans 'Hourly Rate' %}</th>
-            <th>{% trans 'Hours/Month' %}</th>
+            <th style="text-align: center">{% trans 'Netto' %}</th>
+            <th style="text-align: center">{% trans 'Brutto' %}</th>
+            <th style="text-align: center">{% trans 'VAT' %}</th>
+            <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
+            <th style="text-align: center">{% trans 'Hours/Month' %}</th>
             <th colspan="2"></th>
         </tr>
         </thead>
         {% for quarter in year_report.quarters %}
           <tr>
             <td>{{ quarter }}</td>
-            <td>{{ quarter.netto_with_currency|default:'-' }}</td>
-            <td>{{ quarter.brutto_with_currency|default:'-' }}</td>
-            <td>{{ quarter.vat_with_currency|default:'-' }}</td>
-            <td>{{ quarter.fee_with_currency|default:'-' }}</td>
-            <td>{{ quarter.hours|default:'-' }}</td>
+            <td style="text-align: right">{{ quarter.netto_with_currency|default:'-' }}</td>
+            <td style="text-align: right">{{ quarter.brutto_with_currency|default:'-' }}</td>
+            <td style="text-align: right">{{ quarter.vat_with_currency|default:'-' }}</td>
+            <td style="text-align: right">{{ quarter.fee_with_currency|default:'-' }}</td>
+            <td style="text-align: right">{{ quarter.hours|default:'-' }}</td>
             <td colspan="2"></td>
           </tr>
         {% endfor %}
         <thead>
         <tr>
-            <th>{{ year.year }}</th>
-            <th>{% trans 'Netto' %}</th>
-            <th>{% trans 'Brutto' %}</th>
-            <th>{% trans 'VAT' %}</th>
-            <th>{% trans 'Hourly Rate' %}</th>
-            <th>{% trans 'Hours/Month' %}</th>
+            <th></th>
+            <th style="text-align: center">{% trans 'Netto' %}</th>
+            <th style="text-align: center">{% trans 'Brutto' %}</th>
+            <th style="text-align: center">{% trans 'VAT' %}</th>
+            <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
+            <th style="text-align: center">{% trans 'Hours/Month' %}</th>
             <th colspan="2"></th>
         </tr>
         </thead>
         <tr>
             <td><strong>{% trans 'Total' %}</strong></td>
-            <td>{{ year_report.netto_with_currency }}</td>
-            <td>{{ year_report.brutto_with_currency }}</td>
-            <td>{{ year_report.vat_with_currency }}</td>
-            <td>{{ year_report.fee_with_currency }}</td>
-            <td>{{ year_report.hours }}</td>
+            <td style="text-align: right">{{ year_report.netto_with_currency }}</td>
+            <td style="text-align: right">{{ year_report.brutto_with_currency }}</td>
+            <td style="text-align: right">{{ year_report.vat_with_currency }}</td>
+            <td style="text-align: right">{{ year_report.fee_with_currency }}</td>
+            <td style="text-align: right">{{ year_report.hours }}</td>
             <td colspan="2"></td>
         </tr>
         </tbody>
