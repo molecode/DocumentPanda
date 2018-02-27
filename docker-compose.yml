@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+
+  django:
+    build:
+      dockerfile: docker/Dockerfile
+      context: .
+    command: python /src/manage.py runserver 0.0.0.0:8000
+    container_name: document_panda
+    volumes:
+      - .:/src
+    ports: 
+      - '8000:8000'
