@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'customer'
 urlpatterns = [
     url(r'add/$', views.CustomerCreateView.as_view(), name='add'),
     url(r'(?P<pk>[0-9]+)/update/$', views.CustomerUpdateView.as_view(), name='update'),

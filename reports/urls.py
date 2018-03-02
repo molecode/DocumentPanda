@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'reports'
 urlpatterns = [
     url(r'add/$', views.ReportsCreateView.as_view(), name='add'),
     url(r'(?P<pk>[0-9]+)/update/$', views.ReportsUpdateView.as_view(), name='update'),
