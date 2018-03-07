@@ -122,7 +122,7 @@ class MonthReport(CurrencyMixin, models.Model):
     @classmethod
     def get_last_report(cls):
         try:
-            return cls.objects.order_by('id')[0]
+            return cls.objects.order_by('-year', '-month')[0]
         except IndexError:
             return None
 
