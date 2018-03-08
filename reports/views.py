@@ -6,7 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.views.generic import ListView, RedirectView
+from django.views.generic import ListView, RedirectView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -29,6 +29,30 @@ class ReportsRedirectView(RedirectView):
         last_report = MonthReport.objects.first()
         last_year = last_report.year if last_report else timezone.now().year
         return reverse_lazy('reports:year_report', kwargs={'year': last_year})
+
+
+class DashboardView(TemplateView):
+    """
+    Show a overview of accumulated reports
+    """
+    template_name = 'reports/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+
+        year_reports = []
+        first_report = MonthReport.objects.last()
+        if first_report:
+            first_year = first_report.year
+            last_year = MonthReport.objects.first().year
+            for year in range(first_year, last_year + 1):
+                month_reports = MonthReport.objects.filter(year=year)
+                year_report = YearReport(year, month_reports)
+                year_reports.append(year_report)
+
+        context['year_reports'] = year_reports
+
+        return context
 
 
 class ReportImportView(SuccessMessageMixin, FormView):

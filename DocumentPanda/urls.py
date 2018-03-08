@@ -17,13 +17,15 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 from django.views.generic import RedirectView, TemplateView
+from reports.views import DashboardView
 
 urlpatterns = [
     url(r'^customer/', include('customer.urls')),
     url(r'^reports/', include('reports.urls')),
     url(r'^admin/', admin.site.urls),
     # url(r'^$', TemplateView.as_view(template_name='base.html'), name='index'),
-    url(r'^$', RedirectView.as_view(url='reports/'), name='index'),
+    url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
+    url(r'^$', RedirectView.as_view(url='dashboard'), name='index'),
 ]
 
 #if settings.DEBUG:

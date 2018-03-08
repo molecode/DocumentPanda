@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block body %}
+  <div class="w3-content">
+  <p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
+
+  <script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+	   	  labels: [{% for year_report in year_reports %}{{ year_report.year }},{% endfor %}],
+          datasets: [{
+            label: "Netto",
+            data: [{% for year_report in year_reports %}{{ year_report.netto }},{% endfor %}],
+            fill: false,
+			borderColor: 'rgb(75, 192, 192)',
+            lineTension: 0.1
+          }]},
+        options: {}
+    });
+  </script>
+{% endblock body %}
