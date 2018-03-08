@@ -26,7 +26,7 @@ class ReportsRedirectView(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        last_report = MonthReport.get_last_report()
+        last_report = MonthReport.objects.first()
         last_year = last_report.year if last_report else timezone.now().year
         return reverse_lazy('reports:year_report', kwargs={'year': last_year})
 

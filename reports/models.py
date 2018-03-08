@@ -119,13 +119,6 @@ class MonthReport(CurrencyMixin, models.Model):
         """Get the hours of work of this month."""
         return round(self.hours / Decimal(4.33), 2)
 
-    @classmethod
-    def get_last_report(cls):
-        try:
-            return cls.objects.order_by('-year', '-month')[0]
-        except IndexError:
-            return None
-
     def __add__(self, other):
         total_hours = self.hours + other.hours
         self.fee = (self.netto + other.netto) / total_hours
