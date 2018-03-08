@@ -99,8 +99,6 @@ class MonthReport(CurrencyMixin, models.Model):
     @property
     def netto(self):
         """Get the netto amount of money of this month."""
-        if hasattr(self, 'foo'):
-            print(self.foo)
         if self.hours == 0 or self.fee == 0:
             return 0
         return round(self.fee * self.hours, 2)
