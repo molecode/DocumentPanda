@@ -14,7 +14,7 @@ from django.contrib import messages
 from customer.models import Customer
 from customer.views import FormViewW3Mixin
 
-from .models import MonthReport, CurrencyMixin, YearReport
+from .models import MonthReport, YearReport
 from .forms import UploadForm
 
 

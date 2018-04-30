@@ -8,37 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from customer.models import Customer
 
 
-class CurrencyMixin(object):
-    """Mixin for getting values with currency"""
-    def value_with_currency(self, value):
-        val = getattr(self, value)
-        if val:
-            return '{} {}'.format(round(val, 2), MonthReport.CURRENCY)
-        else:
-            return val
-
-    @property
-    def netto_with_currency(self):
-        """Get the netto with currency."""
-        return self.value_with_currency('netto')
-
-    @property
-    def vat_with_currency(self):
-        """Get the VAT with currency."""
-        return self.value_with_currency('vat')
-
-    @property
-    def brutto_with_currency(self):
-        """Get the brutto with currency."""
-        return self.value_with_currency('brutto')
-
-    @property
-    def fee_with_currency(self):
-        """Get the fee with currency."""
-        return self.value_with_currency('fee')
-
-
-class MonthReport(CurrencyMixin, models.Model):
+class MonthReport(models.Model):
     """
     This model holds the needed information for a monthly report.
     The needed information are only the hours of work and the fee of the project.
@@ -132,7 +102,7 @@ class MonthReport(CurrencyMixin, models.Model):
                                                  customer_name)
 
 
-class AbstractReport(CurrencyMixin):
+class AbstractReport():
     """
     Abstract class for year and quarter reports.
     """
@@ -158,6 +128,7 @@ class YearReport(AbstractReport):
         self.year = year
         self.months = self.create_months_from_queryset(month_queryset)
         self.quarters = self.create_quarters()
+        self.currency = MonthReport.CURRENCY
         super().__init__()
 
     def create_months_from_queryset(self, month_queryset):

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load humanize %}
+{% load l10n %}
 
 {% block body %}
   <div class="w3-content">
@@ -57,10 +59,10 @@
         {% for month in year_report.months %}
             <tr>
                 <td>{{ month.get_month_display }}</td>
-                <td style="text-align: right">{{ month.netto_with_currency|default:'-' }}</td>
-                <td style="text-align: right">{{ month.brutto_with_currency|default:'-' }}</td>
-                <td style="text-align: right">{{ month.vat_with_currency|default:'-' }}</td>
-                <td style="text-align: right">{{ month.fee_with_currency|default:'-' }}</td>
+                <td style="text-align: right">{{ month.netto|default:'-'|intcomma }} {% if month.netto %}{{ year_report.currency }}{% endif %}</td>
+                <td style="text-align: right">{{ month.brutto|default:'-'|intcomma }} {% if month.brutto %}{{ year_report.currency }}{% endif %}</td>
+                <td style="text-align: right">{{ month.vat|default:'-'|intcomma }} {% if month.vat %}{{ year_report.currency }}{% endif %}</td>
+                <td style="text-align: right">{{ month.fee|default:'-'|floatformat:2 }} {% if month.fee %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.hours|default:'-' }}</td>
                 <td style="text-align: right">{{ month.hours_per_week|default:'-' }}</td>
                 <td>{% if current_customer and month.id %}<a href="{% url 'reports:update' month.id %}">{% trans 'Update' %}</a> | <a href="{% url 'reports:delete' month.id %}">{% trans 'Delete' %}</a>{% endif %}</td>
@@ -80,10 +82,10 @@
         {% for quarter in year_report.quarters %}
           <tr>
             <td>{{ quarter }}</td>
-            <td style="text-align: right">{{ quarter.netto_with_currency|default:'-' }}</td>
-            <td style="text-align: right">{{ quarter.brutto_with_currency|default:'-' }}</td>
-            <td style="text-align: right">{{ quarter.vat_with_currency|default:'-' }}</td>
-            <td style="text-align: right">{{ quarter.fee_with_currency|default:'-' }}</td>
+            <td style="text-align: right">{{ quarter.netto|default:'-'|intcomma }} {% if quarter.netto %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ quarter.brutto|default:'-'|intcomma }} {% if quarter.brutto %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ quarter.vat|default:'-'|intcomma }} {% if quarter.vat %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ quarter.fee|default:'-'|floatformat:2 }} {% if quarter.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.hours|default:'-' }}</td>
             <td colspan="2"></td>
           </tr>
@@ -101,10 +103,10 @@
         </thead>
         <tr>
             <td><strong>{% trans 'Total' %}</strong></td>
-            <td style="text-align: right">{{ year_report.netto_with_currency }}</td>
-            <td style="text-align: right">{{ year_report.brutto_with_currency }}</td>
-            <td style="text-align: right">{{ year_report.vat_with_currency }}</td>
-            <td style="text-align: right">{{ year_report.fee_with_currency }}</td>
+            <td style="text-align: right">{{ year_report.netto|default:'-'|intcomma }} {% if year_report.netto %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ year_report.brutto|default:'-'|intcomma }} {% if year_report.brutto %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ year_report.vat|default:'-'|intcomma }} {% if year_report.vat %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ year_report.fee|default:'-'|floatformat:2 }} {% if year_report.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.hours }}</td>
             <td colspan="2"></td>
         </tr>
@@ -112,6 +114,7 @@
     </table>
   </div>
 
+  {% localize off %}
   <script>
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
@@ -128,4 +131,5 @@
         options: {}
     });
   </script>
+  {% endlocalize %}
 {% endblock body %}
