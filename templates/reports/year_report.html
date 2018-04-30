@@ -38,7 +38,7 @@
       <a href="{% url 'reports:add' %}" class="w3-bar-item w3-button w3-right">{% trans 'Add report' %}</a>
     </div>
 
-	<p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
+    <p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
 
     <table class="w3-table-all w3-card-4 w3-section">
         <thead>
@@ -119,9 +119,10 @@
         data: {
           labels: [{% for month_report in year_report.months %}"{{ month_report.get_month_display }}",{% endfor %}],
           datasets: [{
-            label: "My First Dataset",
+            label: "Netto",
             data: [{% for month_report in year_report.months %}{{ month_report.netto }},{% endfor %}],
             fill: false,
+            borderColor: 'rgb(75, 192, 192)',
             lineTension: 0.1
           }]},
         options: {}

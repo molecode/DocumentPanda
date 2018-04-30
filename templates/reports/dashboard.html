@@ -10,12 +10,12 @@
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-	   	  labels: [{% for year_report in year_reports %}{{ year_report.year }},{% endfor %}],
+        labels: [{% for year_report in year_reports %}{{ year_report.year }},{% endfor %}],
           datasets: [{
             label: "Netto",
             data: [{% for year_report in year_reports %}{{ year_report.netto }},{% endfor %}],
             fill: false,
-			borderColor: 'rgb(75, 192, 192)',
+            borderColor: 'rgb(75, 192, 192)',
             lineTension: 0.1
           }]},
         options: {}
