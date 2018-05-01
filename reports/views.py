@@ -15,7 +15,7 @@ from customer.models import Customer
 from customer.views import FormViewW3Mixin
 
 from .models import MonthReport, YearReport
-from .forms import UploadForm
+from .forms import MonthReportForm, UploadForm
 
 
 class ReportsRedirectView(RedirectView):
@@ -172,8 +172,8 @@ class ReportsListView(ListView):
 
 class ChangeReportMixin(FormViewW3Mixin):
     """Mixin for every modify ReportView: create, update, delete."""
+    form_class = MonthReportForm
     model = MonthReport
-    fields = ['customer', 'month', 'year', 'hours', 'fee']
 
     def get_success_url(self):
         return reverse_lazy('reports:year_report', kwargs={'year': self.object.year, 'customer': self.object.customer.id})
