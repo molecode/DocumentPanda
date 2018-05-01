@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from .models import Customer
+from .forms import CustomerForm
 
 
 class CustomerListView(ListView):
@@ -25,7 +26,7 @@ class FormViewW3Mixin(object):
 class ChangeCustomerMixin(FormViewW3Mixin):
     """Mixin for every modifing CustomerView: create, update, delete."""
     model = Customer
-    fields = ['name', 'customer_id', 'default_fee']
+    form_class = CustomerForm
     success_url = reverse_lazy('customer:list')
 
 
