@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'^customer/', include('customer.urls')),
     url(r'^reports/', include('reports.urls')),
     url(r'^admin/', admin.site.urls),
-    # url(r'^$', TemplateView.as_view(template_name='base.html'), name='index'),
     url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
     url(r'^$', RedirectView.as_view(url='dashboard'), name='index'),
 ]
