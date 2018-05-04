@@ -36,7 +36,7 @@
         </div>
       </div>
       {% endif %}
-      <a href="{% url 'reports:export' view.kwargs.year %}" class="w3-bar-item w3-button w3-right">{% trans 'Export reports' %}</a>
+      <a href="{% url 'reports:export' %}" class="w3-bar-item w3-button w3-right">{% trans 'Export reports' %}</a>
       <a href="{% url 'reports:import' %}" class="w3-bar-item w3-button w3-right">{% trans 'Import reports' %}</a>
       <a href="{% url 'reports:add' %}" class="w3-bar-item w3-button w3-right">{% trans 'Add report' %}</a>
     </div>

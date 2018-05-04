@@ -110,23 +110,19 @@ class ReportImportView(SuccessMessageMixin, FormView):
             html_snippet = message_list[0] + '<br />'
         return html_snippet
 
-class ExportCSV(View):
+class ReportExportCSV(View):
     """
     Export the given reports as csv.
     """
     def get(self, *args, **kwargs):
         month_reports = MonthReport.objects.select_related('customer')
-        #.filter(year=self.kwargs['year'])
-        file_name = '{}_{}'.format(kwargs['year'], _('Yearreport'))
+        file_name = 'document_panda_reports'
 
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(file_name)
 
         writer = csv.writer(response)
         writer.writerow(['customer', 'month', 'year', 'hours', 'fee'])
-        # writer.writerow([_('Month'), _('Netto'), _('Brutto'), _('VAT'), _('Hourly Rate'),
-        #                  _('Hours per Month'), _('Hours per Week')])
-        # year_report = YearReport(self.kwargs['year'], reports)
         for month_report in month_reports:
             writer.writerow([month_report.customer.customer_id, month_report.month, month_report.year, month_report.hours, month_report.fee])
 
