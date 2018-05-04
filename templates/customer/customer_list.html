@@ -2,8 +2,12 @@
 {% load i18n %}
 
 {% block body %}
-  <div class="w3-content w3-section">
-            <a href="{% url 'customer:add' %}" class="w3-button w3-teal">{% trans 'Add customer' %}</a>
+  <div class="w3-content">
+    <div class="w3-bar w3-teal">
+      <a href="{% url 'customer:add' %}" class="w3-button w3-teal">{% trans 'Add customer' %}</a>
+      <a href="{% url 'customer:export' %}" class="w3-bar-item w3-button w3-right">{% trans 'Export reports' %}</a>
+      <a href="{% url 'customer:import' %}" class="w3-bar-item w3-button w3-right">{% trans 'Import reports' %}</a>
+    </div>
             {% if customer_list %}
               <table class="w3-table-all w3-card-4 w3-section">
                 <thead>

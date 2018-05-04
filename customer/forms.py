@@ -12,3 +12,6 @@ class CustomerForm(forms.ModelForm):
                                      localize=True,
                                      max_digits=5,
                                      decimal_places=2)
+
+class UploadForm(forms.Form):
+    file = forms.FileField()
