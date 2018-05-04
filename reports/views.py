@@ -4,9 +4,11 @@ from io import TextIOWrapper
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView, RedirectView, TemplateView
+from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -108,26 +110,27 @@ class ReportImportView(SuccessMessageMixin, FormView):
             html_snippet = message_list[0] + '<br />'
         return html_snippet
 
-# class ExportCSV(View):
-#     """
-#     Export the given reports as csv.
-#     """
-#     def get(self, *args, **kwargs):
-#         reports = MonthReport.objects.select_related('customer').filter(year=self.kwargs['year'])
-#         file_name = '{}_{}'.format(kwargs['year'], _('Yearreport'))
-#
-#         response = HttpResponse(content_type='text/csv')
-#         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(file_name)
-#
-#         writer = csv.writer(response)
-#         writer.writerow([_('Month'), _('Netto'), _('Brutto'), _('VAT'), _('Hourly Rate'),
-#                          _('Hours per Month'), _('Hours per Week')])
-#         year_report = YearReport(self.kwargs['year'], reports)
-#         for month in year_report.months:
-#             writer.writerow([month.get_month_display(), month.netto, month.brutto,
-#                              month.vat, month.fee, month.hours, month.hours_per_week()])
-#
-#         return response
+class ExportCSV(View):
+    """
+    Export the given reports as csv.
+    """
+    def get(self, *args, **kwargs):
+        month_reports = MonthReport.objects.select_related('customer')
+        #.filter(year=self.kwargs['year'])
+        file_name = '{}_{}'.format(kwargs['year'], _('Yearreport'))
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(file_name)
+
+        writer = csv.writer(response)
+        writer.writerow(['customer', 'month', 'year', 'hours', 'fee'])
+        # writer.writerow([_('Month'), _('Netto'), _('Brutto'), _('VAT'), _('Hourly Rate'),
+        #                  _('Hours per Month'), _('Hours per Week')])
+        # year_report = YearReport(self.kwargs['year'], reports)
+        for month_report in month_reports:
+            writer.writerow([month_report.customer.customer_id, month_report.month, month_report.year, month_report.hours, month_report.fee])
+
+        return response
 
 
 class ReportsListView(ListView):
