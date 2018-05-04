@@ -108,7 +108,7 @@
             <td style="text-align: right">{{ year_report.brutto|default:'-'|intcomma }} {% if year_report.brutto %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.vat|default:'-'|intcomma }} {% if year_report.vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.fee|default:'-'|floatformat:2 }} {% if year_report.fee %}{{ year_report.currency }}{% endif %}</td>
-            <td style="text-align: right">{{ year_report.hours }}</td>
+            <td style="text-align: right">{{ year_report.hours|default:'-' }}</td>
             <td colspan="2"></td>
         </tr>
         </tbody>
