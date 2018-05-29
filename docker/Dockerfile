@@ -1,4 +1,4 @@
-FROM python:3.6.4-slim
+FROM python:3.6.5-slim
 MAINTAINER timo@timoschaepe.de
 
 WORKDIR /src
