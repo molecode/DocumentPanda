@@ -2,8 +2,10 @@ FROM python:3.6.5-slim
 MAINTAINER timo@timoschaepe.de
 
 WORKDIR /src
-COPY requirements.txt /src/
-RUN pip install -r requirements.txt
+COPY Pipfile /src/
+COPY Pipfile.lock /src/
+RUN pip install pipenv
+RUN pipenv install --system
 
 EXPOSE 8000
 VOLUME ["/src"]
