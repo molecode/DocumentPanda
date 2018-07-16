@@ -67,8 +67,8 @@ class MonthReport(models.Model):
         super(MonthReport, self).save(*args, **kwargs)
 
     @property
-    def netto(self):
-        """Get the netto amount of money of this month."""
+    def brutto(self):
+        """Get the brutto amount of money of this month."""
         if self.hours == 0 or self.fee == 0:
             return 0
         return round(self.fee * self.hours, 2)
@@ -76,12 +76,12 @@ class MonthReport(models.Model):
     @property
     def vat(self):
         """Get the VAT of this month."""
-        return round(self.netto * Decimal(0.19), 2)
+        return round(self.brutto * Decimal(0.19), 2)
 
     @property
-    def brutto(self):
-        """Get the brutto amount of money of this month."""
-        return self.netto + self.vat
+    def brutto_vat(self):
+        """Get the brutto + VAT amount of money of this month."""
+        return self.brutto + self.vat
 
     def hours_per_week(self): #TODO -- 4.33 durch tatsaechliche Wochenanzahl des Monats ersetzen
         """Get the hours of work of this month."""
@@ -89,7 +89,7 @@ class MonthReport(models.Model):
 
     def __add__(self, other):
         total_hours = self.hours + other.hours
-        self.fee = (self.netto + other.netto) / total_hours
+        self.fee = (self.brutto + other.brutto) / total_hours
         self.hours = total_hours
         return self
 
@@ -97,8 +97,8 @@ class MonthReport(models.Model):
         customer_name = ' - {}'.format(self.customer.name) if hasattr(self, 'customer') else ''
         return '{}/{:0>2} - {} - {} Euro'.format(self.year,
                                                  self.month,
-                                                 _('Netto'),
-                                                 self.netto,
+                                                 _('Brutto'),
+                                                 self.brutto,
                                                  customer_name)
 
 
@@ -107,12 +107,12 @@ class AbstractReport():
     Abstract class for year and quarter reports.
     """
     def __init__(self):
-        self.netto, self.brutto, self.vat, self.fee, self.hours = (Decimal(0.00),)*5
+        self.brutto, self.brutto_vat, self.vat, self.fee, self.hours = (Decimal(0.00),)*5
         self.calculate_values()
 
     def sum_values(self, other):
-        self.netto += other.netto
         self.brutto += other.brutto
+        self.brutto_vat += other.brutto_vat
         self.vat += other.vat
         self.fee += other.fee if other.fee else Decimal(0.00)
         self.hours += other.hours

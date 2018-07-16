@@ -47,8 +47,8 @@
         <thead>
         <tr>
             <th style="text-align: center">{% trans 'Month' %}</th>
-            <th style="text-align: center">{% trans 'Netto' %}</th>
             <th style="text-align: center">{% trans 'Brutto' %}</th>
+            <th style="text-align: center">{% trans 'Brutto' %} + {% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
             <th style="text-align: center">{% trans 'Hours/Month' %}</th>
@@ -60,8 +60,8 @@
         {% for month in year_report.months %}
             <tr>
                 <td>{{ month.get_month_display }}</td>
-                <td style="text-align: right">{{ month.netto|default:'-'|intcomma }} {% if month.netto %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.brutto|default:'-'|intcomma }} {% if month.brutto %}{{ year_report.currency }}{% endif %}</td>
+                <td style="text-align: right">{{ month.brutto_vat|default:'-'|intcomma }} {% if month.brutto_vat %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.vat|default:'-'|intcomma }} {% if month.vat %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.fee|default:'-'|floatformat:2 }} {% if month.fee %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.hours|default:'-' }}</td>
@@ -72,8 +72,8 @@
         <thead>
         <tr>
             <th></th>
-            <th style="text-align: center">{% trans 'Netto' %}</th>
             <th style="text-align: center">{% trans 'Brutto' %}</th>
+            <th style="text-align: center">{% trans 'Brutto' %} + {% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
             <th style="text-align: center">{% trans 'Hours/Month' %}</th>
@@ -83,8 +83,8 @@
         {% for quarter in year_report.quarters %}
           <tr>
             <td>{{ quarter }}</td>
-            <td style="text-align: right">{{ quarter.netto|default:'-'|intcomma }} {% if quarter.netto %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.brutto|default:'-'|intcomma }} {% if quarter.brutto %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ quarter.brutto_vat|default:'-'|intcomma }} {% if quarter.brutto_vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.vat|default:'-'|intcomma }} {% if quarter.vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.fee|default:'-'|floatformat:2 }} {% if quarter.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.hours|default:'-' }}</td>
@@ -94,8 +94,8 @@
         <thead>
         <tr>
             <th></th>
-            <th style="text-align: center">{% trans 'Netto' %}</th>
             <th style="text-align: center">{% trans 'Brutto' %}</th>
+            <th style="text-align: center">{% trans 'Brutto' %} + {% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
             <th style="text-align: center">{% trans 'Hours/Month' %}</th>
@@ -104,8 +104,8 @@
         </thead>
         <tr>
             <td><strong>{% trans 'Total' %}</strong></td>
-            <td style="text-align: right">{{ year_report.netto|default:'-'|intcomma }} {% if year_report.netto %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.brutto|default:'-'|intcomma }} {% if year_report.brutto %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ year_report.brutto_vat|default:'-'|intcomma }} {% if year_report.brutto_vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.vat|default:'-'|intcomma }} {% if year_report.vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.fee|default:'-'|floatformat:2 }} {% if year_report.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.hours|default:'-' }}</td>
@@ -123,8 +123,8 @@
         data: {
           labels: [{% for month_report in year_report.months %}"{{ month_report.get_month_display }}",{% endfor %}],
           datasets: [{
-            label: "Netto",
-            data: [{% for month_report in year_report.months %}{{ month_report.netto }},{% endfor %}],
+            label: "Brutto",
+            data: [{% for month_report in year_report.months %}{{ month_report.brutto }},{% endfor %}],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             lineTension: 0.1
