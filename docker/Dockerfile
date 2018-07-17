@@ -1,5 +1,5 @@
 FROM python:3.6.5-slim
-MAINTAINER timo@timoschaepe.de
+MAINTAINER info@timoschaepe.de
 
 WORKDIR /src
 COPY . /src/
