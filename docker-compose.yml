@@ -4,7 +4,7 @@ services:
 
   django:
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
       context: .
     command: bash -c "python /src/manage.py migrate && python /src/manage.py runserver 0.0.0.0:8000"
     container_name: document_panda
