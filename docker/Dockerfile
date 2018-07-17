@@ -2,7 +2,7 @@ FROM python:3.6.5-slim
 MAINTAINER info@timoschaepe.de
 
 WORKDIR /src
-COPY . /src/
+COPY . /src
 RUN pip install pipenv && pipenv install --system
 
 EXPOSE 8000
