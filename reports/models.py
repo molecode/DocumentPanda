@@ -144,7 +144,7 @@ class YearReport(AbstractReport):
     def calculate_values(self):
         for quarter in self.quarters:
             self.sum_values(quarter)
-        self.fee = round(self.fee/12, 2)
+        self.fee = round(self.fee/4, 2)
 
     def create_quarters(self):
         quarters = []
