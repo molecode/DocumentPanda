@@ -144,7 +144,13 @@ class YearReport(AbstractReport):
     def calculate_values(self):
         for quarter in self.quarters:
             self.sum_values(quarter)
-        self.fee = round(self.fee/4, 2)
+        self.fee = round(self.fee/self.get_filled_quarter(), 2)
+
+    def get_filled_quarter(self):
+        count = 0
+        for quarter in self.quarters:
+            count += 1 if quarter.fee > 0 else 0
+        return count if count > 0 else 1
 
     def create_quarters(self):
         quarters = []
@@ -169,7 +175,13 @@ class YearReport(AbstractReport):
         def calculate_values(self):
             for month in self.months:
                 self.sum_values(month)
-            self.fee = round(self.fee/3, 2)
+            self.fee = round(self.fee/self.get_filled_month(), 2)
+
+        def get_filled_month(self):
+            count = 0
+            for month in self.months:
+                count += 1 if month.fee > 0 else 0
+            return count if count > 0 else 1
 
         def __str__(self):
             return '{}. {}'.format(self.quarter_number, _('Quarter'))
