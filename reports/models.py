@@ -30,7 +30,7 @@ class MonthReport(models.Model):
         (12, _('December')),
     )
 
-    # TODO -- Should not be a constant
+    # XXX -- Should not be a constant
     CURRENCY = '€'
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -83,7 +83,7 @@ class MonthReport(models.Model):
         """Get the brutto + VAT amount of money of this month."""
         return self.brutto + self.vat
 
-    def hours_per_week(self): #TODO -- 4.33 durch tatsaechliche Wochenanzahl des Monats ersetzen
+    def hours_per_week(self): # XXX -- 4.33 durch tatsaechliche Wochenanzahl des Monats ersetzen
         """Get the hours of work of this month."""
         return round(self.hours / Decimal(4.33), 2)
 
