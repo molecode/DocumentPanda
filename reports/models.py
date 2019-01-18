@@ -46,11 +46,9 @@ class MonthReport(models.Model):
                               blank=True,
                               null=True)
     month = models.IntegerField(_('Month'),
-                                choices=MONTH_CHOICES,
-                                default=datetime.datetime.now().month)
+                                choices=MONTH_CHOICES)
     year = models.IntegerField(_('Year'),
-                               choices=[(year, year) for year in range(2000, datetime.datetime.now().year+1)],
-                               default=datetime.datetime.now().year)
+                               choices=[(year, year) for year in range(2000, datetime.datetime.now().year+1)])
     hours = models.DecimalField(_('Working hours'),
                                 max_digits=6,
                                 decimal_places=2)

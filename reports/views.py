@@ -1,4 +1,5 @@
 import csv
+import datetime
 from decimal import Decimal
 from io import TextIOWrapper
 
@@ -181,6 +182,9 @@ class ChangeReportMixin(FormViewW3Mixin):
 class ReportsCreateView(ChangeReportMixin, CreateView):
     template_name = 'common/form.html'
 
+    def get_initial(self):
+        return {'month': datetime.datetime.now().month,
+                'year': datetime.datetime.now().year}
 
 class ReportsUpdateView(ChangeReportMixin, UpdateView):
     template_name = 'common/form.html'
