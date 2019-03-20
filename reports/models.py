@@ -142,9 +142,9 @@ class YearReport(AbstractReport):
     def calculate_values(self):
         for quarter in self.quarters:
             self.sum_values(quarter)
-        self.fee = round(self.fee/self.get_filled_quarter(), 2)
+        self.fee = round(self.fee/self.get_filled_quarters(), 2)
 
-    def get_filled_quarter(self):
+    def get_filled_quarters(self):
         count = 0
         for quarter in self.quarters:
             count += 1 if quarter.fee > 0 else 0
@@ -173,9 +173,9 @@ class YearReport(AbstractReport):
         def calculate_values(self):
             for month in self.months:
                 self.sum_values(month)
-            self.fee = round(self.fee/self.get_filled_month(), 2)
+            self.fee = round(self.fee/self.get_filled_months(), 2)
 
-        def get_filled_month(self):
+        def get_filled_months(self):
             count = 0
             for month in self.months:
                 count += 1 if month.fee > 0 else 0
