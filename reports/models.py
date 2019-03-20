@@ -82,11 +82,13 @@ class MonthReport(models.Model):
         """Get the brutto + VAT amount of money of this month."""
         return self.brutto + self.vat
 
+    @property
     def hours_per_day(self):
         """Get the hours per day."""
         business_days = len([x for x, y in calendar.Calendar().itermonthdays2(int(self.year), self.month) if x != 0 and y not in [4,5]])
-        return round(self.hours / business_days, 2)
+        return round(self.hours / Decimal(business_days), 2)
 
+    @property
     def hours_per_week(self):
         """Get the hours per month."""
         weeks = calendar.monthrange(int(self.year), self.month)[1] / Decimal(7)
@@ -112,7 +114,7 @@ class AbstractReport():
     Abstract class for year and quarter reports.
     """
     def __init__(self):
-        self.brutto, self.brutto_vat, self.vat, self.fee, self.hours = (Decimal(0.00),)*5
+        self.brutto, self.brutto_vat, self.vat, self.fee, self.hours, self.hours_per_day, self.hours_per_week = (Decimal(0.00),)*7
         self.calculate_values()
 
     def sum_values(self, other):
@@ -121,6 +123,8 @@ class AbstractReport():
         self.vat += other.vat
         self.fee += other.fee if other.fee else Decimal(0.00)
         self.hours += other.hours
+        self.hours_per_day += other.hours_per_day
+        self.hours_per_week += other.hours_per_week
 
 
 class YearReport(AbstractReport):
@@ -144,12 +148,15 @@ class YearReport(AbstractReport):
             else:
                 months[month_report.month] += month_report
 
-        return [y for x, y in months.items()]
+        return [y for _, y in months.items()]
 
     def calculate_values(self):
         for quarter in self.quarters:
             self.sum_values(quarter)
-        self.fee = round(self.fee/self.get_filled_quarters(), 2)
+        filled_quarters = self.get_filled_quarters()
+        self.fee = round(self.fee/filled_quarters, 2)
+        self.hours_per_day = round(self.hours_per_day/filled_quarters, 2)
+        self.hours_per_week = round(self.hours_per_week/filled_quarters, 2)
 
     def get_filled_quarters(self):
         count = 0
@@ -180,7 +187,10 @@ class YearReport(AbstractReport):
         def calculate_values(self):
             for month in self.months:
                 self.sum_values(month)
-            self.fee = round(self.fee/self.get_filled_months(), 2)
+            filled_months = self.get_filled_months()
+            self.fee = round(self.fee/filled_months, 2)
+            self.hours_per_day = round(self.hours_per_day/filled_months, 2)
+            self.hours_per_week = round(self.hours_per_week/filled_months, 2)
 
         def get_filled_months(self):
             count = 0
