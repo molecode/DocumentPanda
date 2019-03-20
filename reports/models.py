@@ -1,4 +1,5 @@
 import datetime
+import calendar
 from decimal import Decimal
 
 from django.db import models
@@ -81,9 +82,15 @@ class MonthReport(models.Model):
         """Get the brutto + VAT amount of money of this month."""
         return self.brutto + self.vat
 
-    def hours_per_week(self): # XXX -- 4.33 durch tatsaechliche Wochenanzahl des Monats ersetzen
-        """Get the hours of work of this month."""
-        return round(self.hours / Decimal(4.33), 2)
+    def hours_per_day(self):
+        """Get the hours per day."""
+        business_days = len([x for x, y in calendar.Calendar().itermonthdays2(int(self.year), self.month) if x != 0 and y not in [4,5]])
+        return round(self.hours / business_days, 2)
+
+    def hours_per_week(self):
+        """Get the hours per month."""
+        weeks = calendar.monthrange(int(self.year), self.month)[1] / Decimal(7)
+        return round(self.hours / weeks, 2)
 
     def __add__(self, other):
         total_hours = self.hours + other.hours
