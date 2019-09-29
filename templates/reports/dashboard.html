@@ -14,7 +14,7 @@
         data: {
         labels: [{% for year_report in year_reports %}{{ year_report.year }},{% endfor %}],
           datasets: [{
-            label: "Brutto",
+            label: "Reports",
             data: [{% for year_report in year_reports %}{{ year_report.brutto }},{% endfor %}],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
