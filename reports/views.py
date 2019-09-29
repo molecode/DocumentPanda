@@ -18,7 +18,9 @@ from customer.models import Customer
 from customer.views import FormViewW3Mixin
 
 from .models import MonthReport, YearReport
-from .forms import MonthReportForm, UploadForm
+from .forms import MonthReportForm
+from tax.models import Tax
+from common.forms import UploadForm
 
 
 class ReportsRedirectView(RedirectView):
@@ -44,6 +46,7 @@ class DashboardView(TemplateView):
         context = super(DashboardView, self).get_context_data(**kwargs)
 
         year_reports = []
+        tax_reports = []
         first_report = MonthReport.objects.last()
         if first_report:
             first_year = first_report.year
@@ -53,7 +56,14 @@ class DashboardView(TemplateView):
                 year_report = YearReport(year, month_reports)
                 year_reports.append(year_report)
 
+                tax_report = Tax.objects.filter(year=year)
+                if tax_report:
+                    tax_reports.append(tax_report[0])
+                else:
+                    tax_reports.append(0)
+
         context['year_reports'] = year_reports
+        context['tax_reports'] = tax_reports
 
         return context
 

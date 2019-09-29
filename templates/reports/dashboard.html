@@ -19,6 +19,20 @@
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             lineTension: 0.1
+          },
+          {
+            label: "Income",
+            data: [{% for tax_report in tax_reports %}{% if tax_report %}{{ tax_report.income }},{% else %}0,{% endif %}{% endfor %}],
+            fill: false,
+            borderColor: 'rgb(191, 62, 62)',
+            lineTension: 0.1
+          },
+          {
+            label: "Income tax",
+            data: [{% for tax_report in tax_reports %}{% if tax_report %}{{ tax_report.income_tax }},{% else %}0,{% endif %}{% endfor %}],
+            fill: false,
+            borderColor: 'rgb(0, 102, 0)',
+            lineTension: 0.1
           }]},
         options: {}
     });

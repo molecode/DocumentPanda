@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import Customer
 
+
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
@@ -12,6 +13,3 @@ class CustomerForm(forms.ModelForm):
                                      localize=True,
                                      max_digits=5,
                                      decimal_places=2)
-
-class UploadForm(forms.Form):
-    file = forms.FileField()

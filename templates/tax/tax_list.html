@@ -1,0 +1,38 @@
+{%  extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+
+{% block body %}
+  <div class="w3-content">
+    <div class="w3-bar w3-teal">
+      <a href="{% url 'tax:add' %}" class="w3-button w3-teal">{% trans 'Add tax' %}</a>
+      <a href="{% url 'tax:export' %}" class="w3-bar-item w3-button w3-right">{% trans 'Export tax' %}</a>
+      <a href="{% url 'tax:import' %}" class="w3-bar-item w3-button w3-right">{% trans 'Import tax' %}</a>
+   </div>
+            {% if tax_list %}
+              <table class="w3-table-all w3-card-4 w3-section">
+                <thead>
+                  <tr>
+                    <th>{% trans 'Year' %}</th>
+                    <th>{% trans 'Income' %}</th>
+                    <th>{% trans 'Income tax' %}</th>
+                    <th>{% trans 'Solidarity tax' %}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for tax in tax_list %}
+                  <tr>
+                    <td>{{ tax.year }}</td>
+                    <td>{{ tax.income|intcomma }} €</td>
+                    <td>{{ tax.income_tax|intcomma }} €</td>
+                    <td>{{ tax.solidarity_tax|intcomma }} €</td>
+                    <td><a href="{% url 'tax:update' tax.id %}">{% trans 'Update' %}</a> | <a href="{% url 'tax:delete' tax.id %}">{% trans 'Delete' %}</a></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+                <p>{% trans 'No taxes are available.' %}</li></p>
+            {% endif %}
+  </div>
+{% endblock body %}

@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import MonthReport
 
+
 class MonthReportForm(forms.ModelForm):
     class Meta:
         model = MonthReport
@@ -17,7 +18,3 @@ class MonthReportForm(forms.ModelForm):
                              max_digits=5,
                              decimal_places=2,
                              required=False)
-
-
-class UploadForm(forms.Form):
-    file = forms.FileField()

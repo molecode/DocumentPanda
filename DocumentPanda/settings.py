@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'customer',
     'reports',
+    'tax',
 ]
 
 MIDDLEWARE = [

@@ -13,7 +13,9 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 
 from .models import Customer
-from .forms import CustomerForm, UploadForm
+from .forms import CustomerForm
+from common.forms import UploadForm
+from common.mixins import FormViewW3Mixin
 
 
 class CustomerListView(ListView):
@@ -22,14 +24,6 @@ class CustomerListView(ListView):
 
 class CustomerDetailView(DetailView):
     model = Customer
-
-
-class FormViewW3Mixin(object):
-    def get_form(self, form_class=None):
-        form = super(FormViewW3Mixin, self).get_form(form_class)
-        for _, form_field in form.fields.items():
-            form_field.widget.attrs = {'class': 'w3-input w3-border'}
-        return form
 
 
 class ChangeCustomerMixin(FormViewW3Mixin):

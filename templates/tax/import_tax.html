@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block body %}
+  <div class="w3-content">
+    <div class="w3-panel w3-card w3-light-grey">
+      <h3>{% trans 'Import file should have the following format' %}:</h3>
+      <div class="w3-code notranslate">
+        year,income,income_tax,solidarity_tax<br>
+        2015,10000,100,50.0<br>
+        2017,54000,2500,150<br>
+     </div>
+     <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p>
+          <input type="submit" value="{% trans 'Upload' %}" class="w3-button w3-green" />
+          {% if request.META.HTTP_REFFERER %}
+            <a href="{{ request.META.HTTP_REFERER }}" class="w3-button w3-grey">{% trans 'Back' %}</a>
+          {% else %}
+            <a href="{% url 'customer:list' %}" class="w3-button w3-grey">{% trans 'Back' %}</a>
+          {% endif %}
+        </p>
+     </form>
+    </div>
+  </div>
+{% endblock body %}
