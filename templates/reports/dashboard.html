@@ -24,6 +24,13 @@
             label: "Income",
             data: [{% for tax_report in tax_reports %}{% if tax_report %}{{ tax_report.income }},{% else %}0,{% endif %}{% endfor %}],
             fill: false,
+            borderColor: 'rgb(255, 128, 0)',
+            lineTension: 0.1
+          },
+          {
+            label: "Profit",
+            data: [{% for tax_report in tax_reports %}{% if tax_report %}{{ tax_report.get_profit }},{% else %}0,{% endif %}{% endfor %}],
+            fill: false,
             borderColor: 'rgb(191, 62, 62)',
             lineTension: 0.1
           },
