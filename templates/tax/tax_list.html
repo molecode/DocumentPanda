@@ -1,6 +1,7 @@
 {%  extends 'base.html' %}
 {% load i18n %}
 {% load humanize %}
+{% load l10n %}
 
 {% block body %}
   <div class="w3-content">
@@ -9,6 +10,9 @@
       <a href="{% url 'tax:export' %}" class="w3-bar-item w3-button w3-right">{% trans 'Export tax' %}</a>
       <a href="{% url 'tax:import' %}" class="w3-bar-item w3-button w3-right">{% trans 'Import tax' %}</a>
    </div>
+
+    <p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
+
             {% if tax_list %}
               <table class="w3-table-all w3-card-4 w3-section">
                 <thead>
@@ -39,4 +43,37 @@
                 <p>{% trans 'No taxes are available.' %}</li></p>
             {% endif %}
   </div>
+
+{% localize off %}
+  <script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+        labels: [{% for tax_report in tax_list reversed %}{{ tax_report.year }},{% endfor %}],
+          datasets: [{
+            label: "Income",
+            data: [{% for tax_report in tax_list reversed %}{% if tax_report %}{{ tax_report.income }},{% else %}0,{% endif %}{% endfor %}],
+            fill: false,
+            borderColor: 'rgb(255, 128, 0)',
+            lineTension: 0.1
+          },
+          {
+            label: "Profit",
+            data: [{% for tax_report in tax_list reversed %}{% if tax_report %}{{ tax_report.get_profit }},{% else %}0,{% endif %}{% endfor %}],
+            fill: false,
+            borderColor: 'rgb(191, 62, 62)',
+            lineTension: 0.1
+          },
+          {
+            label: "Income tax",
+            data: [{% for tax_report in tax_list reversed %}{% if tax_report %}{{ tax_report.income_tax }},{% else %}0,{% endif %}{% endfor %}],
+            fill: false,
+            borderColor: 'rgb(0, 102, 0)',
+            lineTension: 0.1
+          }]},
+        options: {}
+    });
+  </script>
+{% endlocalize %}
 {% endblock body %}
