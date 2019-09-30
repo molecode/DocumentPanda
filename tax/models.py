@@ -8,6 +8,7 @@ class Tax(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     income = models.DecimalField(_('Income'), max_digits=10, decimal_places=2)
+    taxable_income = models.DecimalField(_('Taxable Income'), max_digits=10, decimal_places=2)
     income_tax = models.DecimalField(_('Income Tax'), max_digits=10, decimal_places=2)
     solidarity_tax = models.DecimalField(_('Solidarity Tax'), max_digits=10, decimal_places=2)
     year = models.IntegerField(
@@ -27,3 +28,9 @@ class Tax(models.Model):
 
     def get_profit(self):
         return self.income - self.get_total_tax()
+
+    def get_profit_per_month(self):
+        return self.get_profit() / 12
+
+    def get_tax_percentage(self):
+        return 100/self.taxable_income*self.get_total_tax()

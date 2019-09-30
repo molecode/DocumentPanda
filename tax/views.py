@@ -60,9 +60,16 @@ class TaxImportView(SuccessMessageMixin, FormView):
                 total_counter += 1
                 year = row['year']
                 income = row['income']
+                taxable_income = row['taxable_income']
                 income_tax = row['income_tax']
                 solidarity_tax = row['solidarity_tax']
-                tax = Tax(year=year, income=income, income_tax=income_tax, solidarity_tax=solidarity_tax)
+                tax = Tax(
+                    year=year,
+                    income=income,
+                    taxable_income=taxable_income,
+                    income_tax=income_tax,
+                    solidarity_tax=solidarity_tax
+                    )
                 tax.save()
                 success_counter += 1
             except IntegrityError:
@@ -101,8 +108,8 @@ class TaxExportCSV(View):
         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(file_name)
 
         writer = csv.writer(response)
-        writer.writerow(['year', 'income', 'income_tax', 'solidarity_tax'])
+        writer.writerow(['year', 'income', 'taxable_income', 'income_tax', 'solidarity_tax'])
         for tax in tax_set:
-            writer.writerow([tax.year, tax.income, tax.income_tax, tax.solidarity_tax])
+            writer.writerow([tax.year, tax.income, tax.taxable_income, tax.income_tax, tax.solidarity_tax])
 
         return response

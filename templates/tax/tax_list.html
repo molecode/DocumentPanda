@@ -15,8 +15,10 @@
                   <tr>
                     <th>{% trans 'Year' %}</th>
                     <th>{% trans 'Income' %}</th>
-                    <th>{% trans 'Income tax' %}</th>
-                    <th>{% trans 'Solidarity tax' %}</th>
+                    <th>{% trans 'Taxable income' %}</th>
+                    <th>{% trans 'Total tax' %}</th>
+                    <th>{% trans 'Profit' %}</th>
+                    <th>{% trans 'Profit per month' %}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -24,8 +26,10 @@
                   <tr>
                     <td>{{ tax.year }}</td>
                     <td>{{ tax.income|intcomma }} €</td>
-                    <td>{{ tax.income_tax|intcomma }} €</td>
-                    <td>{{ tax.solidarity_tax|intcomma }} €</td>
+                    <td>{{ tax.taxable_income|intcomma }} €</td>
+                    <td>{{ tax.get_total_tax|intcomma }} € ({{ tax.get_tax_percentage|floatformat:2 }} %)</td>
+                    <td>{{ tax.get_profit|intcomma }} €</td>
+                    <td>{{ tax.get_profit_per_month|floatformat:2|intcomma }} €</td>
                     <td><a href="{% url 'tax:update' tax.id %}">{% trans 'Update' %}</a> | <a href="{% url 'tax:delete' tax.id %}">{% trans 'Delete' %}</a></td>
                   </tr>
                 {% endfor %}
