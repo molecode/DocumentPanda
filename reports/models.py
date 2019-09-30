@@ -90,7 +90,7 @@ class MonthReport(models.Model):
 
     @property
     def hours_per_week(self):
-        """Get the hours per month."""
+        """Get the hours per week."""
         weeks = calendar.monthrange(int(self.year), self.month)[1] / Decimal(7)
         return round(self.hours / weeks, 2)
 
