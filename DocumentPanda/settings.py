@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'customer',
     'reports',
     'tax',
+    'invoice',
 ]
 
 MIDDLEWARE = [
