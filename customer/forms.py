@@ -7,7 +7,7 @@ from .models import Customer
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ['name', 'customer_id', 'default_fee']
+        fields = ['name', 'customer_id', 'invoice_address', 'default_fee']
 
     default_fee = forms.DecimalField(label=_('Project fee per hour'),
                                      localize=True,

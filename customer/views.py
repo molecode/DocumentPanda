@@ -1,7 +1,6 @@
 import csv
 from io import TextIOWrapper
 
-from django import forms
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
