@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^reports/', include('reports.urls')),
     url(r'^tax/', include('tax.urls')),
     url(r'^invoice/', include('invoice.urls')),
+    url(r'^settings/', include('profile_settings.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
     url(r'^$', RedirectView.as_view(url='dashboard'), name='index'),

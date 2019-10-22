@@ -21,10 +21,6 @@ class CustomerListView(ListView):
     model = Customer
 
 
-class CustomerDetailView(DetailView):
-    model = Customer
-
-
 class ChangeCustomerMixin(FormViewW3Mixin):
     """Mixin for every modifing CustomerView: create, update, delete."""
     model = Customer

@@ -16,6 +16,7 @@ from .forms import TaxForm
 from common.forms import UploadForm
 from common.mixins import FormViewW3Mixin
 
+
 class TaxListView(ListView):
     model = Tax
 

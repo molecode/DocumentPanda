@@ -7,6 +7,7 @@ name = "pypi"
 pytz = "*"
 django-extensions = "*"
 Django = "*"
+django-solo = "*"
 
 [dev-packages]
 pytest = "*"

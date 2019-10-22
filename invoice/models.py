@@ -4,15 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 from reports.models import MonthReport
 
 
-class BankAccount(models.Model):
-    """
-    This model holds the needed information for a bank account.
-    """
-    bank_name = models.CharField(max_length=255)
-    iban = models.CharField(max_length=255)
-    bic = models.CharField(max_length=255)
-
-
 class Invoice(models.Model):
     """
     This model holds the needed information for an invoice for one report.
@@ -24,15 +15,20 @@ class Invoice(models.Model):
     month_report = models.ForeignKey(MonthReport,
                                      verbose_name=_('Month report'),
                                      on_delete=models.PROTECT)
-    my_address = models.TextField()
+    your_full_name = models.CharField(max_length=255)
+    your_address = models.TextField()
     customer_address = models.TextField()
     invoice_date = models.DateField()
     invoice_period_begin = models.DateField()
     invoice_period_end = models.DateField()
     email = models.EmailField()
     turnover_tax_number = models.CharField(max_length=32)
-    bank_account = models.ForeignKey(BankAccount,
-                                     verbose_name=_('Bank account'),
-                                     on_delete=models.PROTECT)
+    bank_name = models.CharField(max_length=255)
+    iban = models.CharField(max_length=255)
+    bic = models.CharField(max_length=255)
 
+    class Meta:
+        ordering = ['-month_report__year', '-month_report__month']
 
+    def __str__(self):
+        return f'{self.invoice_number} - {self.month_report.customer.name}'

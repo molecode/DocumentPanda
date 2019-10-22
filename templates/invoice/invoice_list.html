@@ -1,0 +1,31 @@
+{%  extends 'base.html' %}
+{% load i18n %}
+
+{% block body %}
+  <div class="w3-content">
+    <div class="w3-bar w3-teal">
+    </div>
+            {% if invoice_list %}
+              <table class="w3-table-all w3-card-4 w3-section">
+                <thead>
+                  <tr>
+                    <th>{% trans 'Date' %}</th>
+                    <th>{% trans 'Customer' %}</th>
+                    <th>{% trans 'Actions' %}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for invoice in invoice_list %}
+                  <tr>
+                    <td>{{ invoice.month_report.year }}-{{ invoice.month_report.month }}</td>
+                    <td>{{ invoice.month_report.customer.name }}</td>
+                    <td><a href="{% url 'invoice:update' invoice.month_report.id %}">{% trans 'Update' %}</a> | <a href="{% url 'invoice:delete' invoice.month_report.id %}">{% trans 'Delete' %}</a></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+                <p>{% trans 'No invoices are available.' %}</li></p>
+            {% endif %}
+  </div>
+{% endblock body %}
