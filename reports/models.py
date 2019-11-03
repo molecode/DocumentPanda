@@ -6,7 +6,11 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
+from profile_settings.models import ProfileSettings
 from customer.models import Customer
+
+
+settings = ProfileSettings.get_solo()
 
 
 class MonthReport(models.Model):
@@ -30,9 +34,6 @@ class MonthReport(models.Model):
         (11, _('November')),
         (12, _('December')),
     )
-
-    # XXX -- Should not be a constant
-    CURRENCY = '€'
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -137,7 +138,7 @@ class YearReport(AbstractReport):
         self.year = year
         self.months = self.create_months_from_queryset(month_queryset)
         self.quarters = self.create_quarters()
-        self.currency = MonthReport.CURRENCY
+        self.currency = settings.currency
         super().__init__()
 
     def create_months_from_queryset(self, month_queryset):
