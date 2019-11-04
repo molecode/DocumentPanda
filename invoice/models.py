@@ -21,7 +21,7 @@ class Invoice(models.Model):
     customer_name = models.CharField(max_length=255)
     customer_street = models.CharField(max_length=512)
     customer_city = models.CharField(max_length=512)
-    contract_number = models.CharField(max_length=128)
+    contract_number = models.CharField(max_length=128, blank=True)
     invoice_date = models.DateField()
     invoice_period_begin = models.DateField()
     invoice_period_end = models.DateField()

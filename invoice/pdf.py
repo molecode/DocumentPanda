@@ -5,6 +5,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.rl_config import defaultPageSize
 
 from django.conf import settings
+from django.template import defaultfilters
 
 PAGE_WIDTH = defaultPageSize[0]
 PAGE_HEIGHT = defaultPageSize[1]
@@ -29,15 +30,17 @@ def create_pdf(invoice):
     can.drawString(LEFT_PADDING, 680, invoice.customer_city)
 
     can.drawString(LEFT_PADDING, 640, 'Rechnungnummer: ')
-    can.drawString(LEFT_PADDING, 625, 'Kunde: ')
-    can.drawString(LEFT_PADDING, 610, 'Beratervertrag: ')
+    if invoice.contract_number:
+        can.drawString(LEFT_PADDING, 625, 'Kunde: ')
+        can.drawString(LEFT_PADDING, 610, 'Beratervertrag: ')
     can.drawString(LEFT_PADDING + 400, 610, 'Datum: ')
 
     can.setFont(FONT_BOLD, FONT_SIZE)
     can.drawString(LEFT_PADDING + 110, 640, invoice.invoice_number)
-    can.drawString(LEFT_PADDING + 110, 625, invoice.customer_name)
-    can.drawString(LEFT_PADDING + 110, 610, invoice.contract_number)
-    can.drawString(LEFT_PADDING + 440, 610, invoice.invoice_date.strftime('%d. %b. %Y'))
+    if invoice.contract_number:
+        can.drawString(LEFT_PADDING + 110, 625, invoice.month_report.customer.name)
+        can.drawString(LEFT_PADDING + 110, 610, invoice.contract_number)
+    can.drawString(LEFT_PADDING + 440, 610, defaultfilters.date(invoice.invoice_date, 'd. M. Y'))
 
     can.setFont(FONT_BOLD, 28)
     text = 'Rechnung'
