@@ -10,7 +10,9 @@ from common.mixins import FormViewW3Mixin
 class ChangeProfileSettingsMixin(FormViewW3Mixin):
     """Mixin for every modifing TaxView: create, update, delete."""
     model = ProfileSettings
-    fields = ['full_name', 'address', 'email', 'turnover_tax_number', 'bank_name', 'iban', 'bic', 'currency']
+    fields = ['full_name', 'street', 'city', 'email',
+              'turnover_tax_number', 'bank_name',
+              'iban', 'bic', 'currency']
     success_url = reverse_lazy('profile_settings:index')
 
     def form_valid(self, form):

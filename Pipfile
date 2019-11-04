@@ -8,6 +8,7 @@ pytz = "*"
 django-extensions = "*"
 Django = "*"
 django-solo = "*"
+reportlab = "*"
 
 [dev-packages]
 pytest = "*"

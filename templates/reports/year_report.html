@@ -70,6 +70,10 @@
                 <td style="text-align: right">{{ month.hours_per_week|default:'-' }}</td>
                 <td>
                   {% if current_customer and month.id %}
+                  {% if month.invoice %}
+                  <a href="{% url 'invoice:download' month.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Download Invoice' %}</span><i class="fas fa-file-download"></i></span></a>
+                  |
+                  {% endif %}
                   <a href="{% url 'invoice:detail' month.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Invoice' %}</span><i class="far fa-file-alt"></i></span></a>
                   |
                   <a href="{% url 'reports:update' month.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Update' %}</span><i class="fas fa-edit"></i></span></a>

@@ -5,7 +5,8 @@ from solo.models import SingletonModel
 
 class ProfileSettings(SingletonModel):
     full_name = models.CharField(_('Your full name'), max_length=255, blank=True)
-    address = models.TextField(_('Your address'), blank=True)
+    street = models.CharField(_('Your street'), max_length=512, blank=True)
+    city = models.CharField(_('Your city'), max_length=512, blank=True)
     email = models.EmailField(_('Your email'), blank=True)
     turnover_tax_number = models.CharField(_('You turnover tax number'), max_length=255, blank=True)
     bank_name = models.CharField(_('Bank name'), max_length=255, blank=True)
