@@ -19,7 +19,15 @@
                   <tr>
                     <td>{{ invoice.month_report.year }}-{{ invoice.month_report.month }}</td>
                     <td>{{ invoice.month_report.customer.name }}</td>
-                    <td><a href="{% url 'invoice:update' invoice.month_report.id %}">{% trans 'Update' %}</a> | <a href="{% url 'invoice:delete' invoice.month_report.id %}">{% trans 'Delete' %}</a></td>
+                    <td>
+                      <a href="{% url 'invoice:download' invoice.month_report.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Download Invoice' %}</span><i class="fas fa-file-download"></i></span></a>
+                      |
+                      <a href="{% url 'invoice:preview' invoice.month_report.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Preview Invoice' %}</span><i class="fas fa-eye"></i></span></a>
+                      |
+                      <a href="{% url 'invoice:update' invoice.month_report.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Update' %}</span><i class="fas fa-edit"></i></span></a>
+                      |
+                      <a href="{% url 'invoice:delete' invoice.month_report.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Delete' %}</span><i class="fas fa-trash"></i></span></a>
+                    </td>
                   </tr>
                 {% endfor %}
                 </tbody>

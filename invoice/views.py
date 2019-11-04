@@ -22,6 +22,11 @@ def download(request, report_pk):
     return FileResponse(open(report.invoice.file_path, 'rb'), as_attachment=True)
 
 
+def preview(request, report_pk):
+    report = get_object_or_404(MonthReport, pk=report_pk)
+    return FileResponse(open(report.invoice.file_path, 'rb'))
+
+
 class InvoiceListView(ListView):
     model = Invoice
 
