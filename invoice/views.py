@@ -53,7 +53,6 @@ class InvoiceDetailView(DetailView):
 
 class ChangeInvoiceMixin(FormViewW3Mixin):
     model = Invoice
-    template_name = 'common/form.html'
     fields = ['activity', 'your_full_name', 'your_street', 'your_city',
               'customer_name', 'customer_street', 'customer_city',
               'invoice_number', 'contract_number', 'invoice_date',
@@ -72,18 +71,30 @@ class InvoiceDeleteView(ChangeInvoiceMixin, DeleteView):
 
 
 class InvoiceUpdateView(ChangeInvoiceMixin, UpdateView):
-    template_name = 'common/form.html'
+    template_name = 'invoice/update_form.html'
+
+    def get_success_url(self):
+        if 'download' in self.request.POST:
+            report = self.object.month_report
+            return reverse_lazy('invoice:download', kwargs={'report_pk': report.pk})
+        return reverse_lazy('invoice:list')
 
 
 class InvoiceCreateView(ChangeInvoiceMixin, CreateView):
-    def get_success_url(self):
+    template_name = 'invoice/create_form.html'
+
+    def _get_report(self):
         report_pk = int(self.kwargs['report_pk'])
-        report = MonthReport.objects.select_related('customer').get(pk=report_pk)
+        return MonthReport.objects.select_related('customer').get(pk=report_pk)
+
+    def get_success_url(self):
+        report = self.object.month_report
+        if 'download' in self.request.POST:
+            return reverse_lazy('invoice:download', kwargs={'report_pk': report.pk})
         return reverse_lazy('reports:year_report', kwargs={'year': report.year, 'customer': report.customer.id})
 
     def form_valid(self, form):
-        report_pk = int(self.kwargs['report_pk'])
-        report = MonthReport.objects.select_related('customer').get(pk=report_pk)
+        report = self._get_report()
         customer = report.customer
 
         settings = ProfileSettings.get_solo()
@@ -114,7 +125,7 @@ class InvoiceCreateView(ChangeInvoiceMixin, CreateView):
             customer.contract_number = form.cleaned_data['contract_number']
         customer.save()
 
-        form.instance.month_report_id = report_pk
+        form.instance.month_report_id = report.pk
         success_url = super().form_valid(form)
         create_pdf(self.object)
         return success_url
@@ -132,8 +143,7 @@ class InvoiceCreateView(ChangeInvoiceMixin, CreateView):
         initial['iban'] = settings.iban
         initial['bic'] = settings.bic
 
-        report_pk = int(self.kwargs['report_pk'])
-        report = MonthReport.objects.select_related('customer').get(pk=report_pk)
+        report = self._get_report()
         customer = report.customer
 
         initial['customer_name'] = customer.invoice_name

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block body %}
+  <div class="w3-content w3-section w3-card-4">
+    <form action="" method="post" class="w3-container">
+        <div class="w3-section">
+            {% csrf_token %}
+            {% for f in form %}
+              {% if f.errors %}
+                <div class="w3-panel w3-red">
+                  <p>{{ f.errors }}</p>
+                </div>
+              {% endif %}
+              <label for="{{ f.id_for_label }}">{{ f.label }}:</label>
+              {{ f }}
+            {% endfor %}
+            <p>
+                <input type="submit" name="save" value="{% trans 'Save' %}" class="w3-button w3-green" />
+                <input type="submit" name="download" value="{% trans 'Save and Download' %}" class="w3-button w3-green" />
+                {% if request.META.HTTP_REFERER %}
+                    <a href="{{ request.META.HTTP_REFERER }}" class="w3-button w3-grey">{% trans 'Back' %}</a>
+                {% else %}
+                    <a href="{% url 'reports:index' %}" class="w3-button w3-grey">{% trans 'Back' %}</a>
+                {% endif %}
+            </p>
+        </div>
+    </form>
+  </div>
+{% endblock body %}
