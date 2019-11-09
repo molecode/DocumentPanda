@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -38,3 +40,11 @@ class Invoice(models.Model):
 
     def __str__(self):
         return f'{self.invoice_number} - {self.month_report.customer.name}'
+
+    def delete(self, using=None, keep_parents=False):
+        ret = super().delete(using=using, keep_parents=keep_parents)
+
+        if os.path.isfile(self.file_path):
+            os.remove(self.file_path)
+
+        return ret
