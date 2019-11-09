@@ -89,7 +89,8 @@ def create_pdf(invoice):
     can.drawString(LEFT_PADDING + 450 + betrag_width - total_value_width, 330, total_value)
 
     can.setFont(FONT, FONT_SIZE)
-    can.drawString(LEFT_PADDING, 300, 'Das Dokument der Zeiterfassung ist beigefügt.')
+    if invoice.contract_number:
+        can.drawString(LEFT_PADDING, 300, 'Das Dokument der Zeiterfassung ist beigefügt.')
     can.drawString(LEFT_PADDING, 250, 'Mit freundlichen Grüßen')
     can.drawString(LEFT_PADDING, 200, 'Timo Schäpe')
 
