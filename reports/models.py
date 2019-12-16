@@ -10,9 +10,6 @@ from profile_settings.models import ProfileSettings
 from customer.models import Customer
 
 
-settings = ProfileSettings.get_solo()
-
-
 class MonthReport(models.Model):
     """
     This model holds the needed information for a monthly report.
@@ -134,6 +131,7 @@ class YearReport(AbstractReport):
     and also the total amount.
     """
     def __init__(self, year, month_queryset, customer=None):
+        self.settings = ProfileSettings.get_solo()
         self.customer = customer
         self.year = year
         self.months = self.create_months_from_queryset(month_queryset)
