@@ -136,7 +136,7 @@ class YearReport(AbstractReport):
         self.year = year
         self.months = self.create_months_from_queryset(month_queryset)
         self.quarters = self.create_quarters()
-        self.currency = settings.currency
+        self.currency = self.settings.currency
         super().__init__()
 
     def create_months_from_queryset(self, month_queryset):
