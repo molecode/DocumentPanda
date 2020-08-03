@@ -8,5 +8,6 @@ services:
     container_name: document_panda
     volumes:
       - ./data:/src/data
+      - ./media:/src/media
     ports:
       - '8000:8000'
