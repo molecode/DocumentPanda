@@ -1,6 +1,5 @@
 import csv
 import datetime
-from decimal import Decimal
 from io import TextIOWrapper
 
 from django.contrib.messages.views import SuccessMessageMixin
@@ -121,6 +120,7 @@ class ReportImportView(SuccessMessageMixin, FormView):
             html_snippet = message_list[0] + '<br />'
         return html_snippet
 
+
 class ReportExportCSV(View):
     """
     Export the given reports as csv.
@@ -195,6 +195,7 @@ class ReportsCreateView(ChangeReportMixin, CreateView):
     def get_initial(self):
         return {'month': datetime.datetime.now().month,
                 'year': datetime.datetime.now().year}
+
 
 class ReportsUpdateView(ChangeReportMixin, UpdateView):
     template_name = 'common/form.html'

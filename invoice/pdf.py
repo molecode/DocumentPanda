@@ -78,7 +78,7 @@ def create_pdf(invoice):
 
     mwst_value = str(invoice.month_report.vat)
     mwst_value_width = stringWidth(mwst_value, FONT, FONT_SIZE)
-    can.drawString(LEFT_PADDING, 350, 'MWSt. (19%)')
+    can.drawString(LEFT_PADDING, 350, f'MWSt. ({invoice.month_report.vat_percent}%)')
     can.drawString(LEFT_PADDING + 450 + betrag_width - mwst_value_width, 350, mwst_value)
     can.line(LEFT_PADDING, 345, LEFT_PADDING + 450 + betrag_width, 345)
 

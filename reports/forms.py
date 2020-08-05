@@ -7,7 +7,7 @@ from .models import MonthReport
 class MonthReportForm(forms.ModelForm):
     class Meta:
         model = MonthReport
-        fields = ['customer', 'month', 'year', 'hours', 'fee']
+        fields = ['customer', 'month', 'year', 'hours', 'fee', 'vat_percent']
 
     hours = forms.DecimalField(label=_('Working hours'),
                                localize=True,
@@ -18,3 +18,4 @@ class MonthReportForm(forms.ModelForm):
                              max_digits=5,
                              decimal_places=2,
                              required=False)
+
