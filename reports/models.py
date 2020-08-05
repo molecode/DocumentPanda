@@ -52,6 +52,7 @@ class MonthReport(models.Model):
                                 max_digits=6,
                                 decimal_places=2)
     slug = models.SlugField()
+    vat_percent = models.DecimalField(_('VAT in %'), max_digits=4, decimal_places=2, default=19)
 
     class Meta:
         unique_together = (('customer', 'month', 'year'),)
@@ -73,7 +74,7 @@ class MonthReport(models.Model):
     @property
     def vat(self):
         """Get the VAT of this month."""
-        return round(self.brutto * Decimal(0.19), 2)
+        return round(self.brutto / Decimal(100) * self.vat_percent, 2)
 
     @property
     def brutto_vat(self):
