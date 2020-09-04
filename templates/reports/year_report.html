@@ -63,7 +63,7 @@
                 <td>{{ month.get_month_display }}</td>
                 <td style="text-align: right">{{ month.brutto|default:'-'|intcomma }} {% if month.brutto %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.brutto_vat|default:'-'|intcomma }} {% if month.brutto_vat %}{{ year_report.currency }}{% endif %}</td>
-                <td style="text-align: right">{{ month.vat|default:'-'|intcomma }} {% if month.vat %}{{ year_report.currency }}{% endif %}</td>
+                <td style="text-align: right"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{{ month.vat_percent }}%</span>{{ month.vat|default:'-'|intcomma }}</span> {% if month.vat %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.fee|default:'-'|floatformat:2 }} {% if month.fee %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.hours|default:'-' }}</td>
                 <td style="text-align: right">{{ month.hours_per_day|default:'-' }}</td>
