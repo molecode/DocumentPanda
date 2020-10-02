@@ -17,7 +17,7 @@ from customer.models import Customer
 from customer.views import FormViewW3Mixin
 
 from .models import MonthReport, YearReport
-from .forms import MonthReportForm
+from .forms import FixedPriceMonthReportForm, FeeMonthReportForm
 from tax.models import Tax
 from common.forms import UploadForm
 
@@ -182,24 +182,38 @@ class ReportsListView(ListView):
 
 class ChangeReportMixin(FormViewW3Mixin):
     """Mixin for every modify ReportView: create, update, delete."""
-    form_class = MonthReportForm
     model = MonthReport
+    template_name = 'common/form.html'
 
     def get_success_url(self):
         return reverse_lazy('reports:year_report', kwargs={'year': self.object.year, 'customer': self.object.customer.id})
 
 
-class ReportsCreateView(ChangeReportMixin, CreateView):
-    template_name = 'common/form.html'
+class FeeReportsCreateView(ChangeReportMixin, CreateView):
+    form_class = FeeMonthReportForm
 
     def get_initial(self):
         return {'month': datetime.datetime.now().month,
                 'year': datetime.datetime.now().year}
 
 
-class ReportsUpdateView(ChangeReportMixin, UpdateView):
-    template_name = 'common/form.html'
+class FixedPriceReportsCreateView(ChangeReportMixin, CreateView):
+    form_class = FixedPriceMonthReportForm
+
+    def get_initial(self):
+        return {'month': datetime.datetime.now().month,
+                'year': datetime.datetime.now().year}
+
+
+class FeeReportsUpdateView(ChangeReportMixin, UpdateView):
+    form_class = FeeMonthReportForm
+
+
+class FixedPriceReportsUpdateView(ChangeReportMixin, UpdateView):
+    form_class = FixedPriceMonthReportForm
 
 
 class ReportsDeleteView(ChangeReportMixin, DeleteView):
     template_name = 'common/confirm_delete.html'
+    model = MonthReport
+    fields = ['customer', 'month', 'year', 'fixed_price', 'vat_percent']
