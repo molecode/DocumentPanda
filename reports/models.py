@@ -42,15 +42,19 @@ class MonthReport(models.Model):
     fee = models.DecimalField(_('Project fee per hour'),
                               max_digits=5,
                               decimal_places=2,
-                              blank=True,
-                              null=True)
+                              default=0)
     month = models.IntegerField(_('Month'),
                                 choices=MONTH_CHOICES)
     year = models.IntegerField(_('Year'),
                                choices=[(year, year) for year in range(2000, datetime.datetime.now().year+1)])
     hours = models.DecimalField(_('Working hours'),
                                 max_digits=6,
-                                decimal_places=2)
+                                decimal_places=2,
+                                default=0)
+    fixed_price = models.DecimalField(_("Fixed price"),
+                                      max_digits=10,
+                                      decimal_places=2,
+                                      default=0)
     slug = models.SlugField()
     vat_percent = models.DecimalField(_('VAT in %'), max_digits=4, decimal_places=2, default=19)
 
@@ -60,16 +64,19 @@ class MonthReport(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify('{}-{}'.format(self.year, self.month))
-        if not self.fee:
+        if not self.fee and not self.fixed_price:
             self.fee = self.customer.default_fee
         super(MonthReport, self).save(*args, **kwargs)
 
     @property
     def brutto(self):
         """Get the brutto amount of money of this month."""
-        if self.hours == 0 or self.fee == 0:
-            return 0
-        return round(self.fee * self.hours, 2)
+        ret = 0
+        if self.fixed_price:
+            ret += self.fixed_price
+        if self.hours and self.fee:
+            ret += round(self.fee * self.hours, 2)
+        return ret
 
     @property
     def vat(self):
@@ -83,8 +90,10 @@ class MonthReport(models.Model):
 
     def __add__(self, other):
         total_hours = self.hours + other.hours
-        self.fee = (self.brutto + other.brutto) / total_hours
+        if other.hours:
+            self.fee = round((self.brutto + other.brutto) / total_hours, 2)
         self.hours = total_hours
+        self.fixed_price = other.fixed_price
         return self
 
     def __str__(self):

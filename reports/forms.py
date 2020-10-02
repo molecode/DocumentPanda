@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from .models import MonthReport
 
 
-class MonthReportForm(forms.ModelForm):
+class FeeMonthReportForm(forms.ModelForm):
     class Meta:
         model = MonthReport
         fields = ['customer', 'month', 'year', 'hours', 'fee', 'vat_percent']
@@ -19,3 +19,13 @@ class MonthReportForm(forms.ModelForm):
                              decimal_places=2,
                              required=False)
 
+
+class FixedPriceMonthReportForm(forms.ModelForm):
+    class Meta:
+        model = MonthReport
+        fields = ['customer', 'month', 'year', 'fixed_price', 'vat_percent']
+
+    fixed_price = forms.DecimalField(label=_('Fixed price'),
+                                     localize=True,
+                                     max_digits=6,
+                                     decimal_places=2)

@@ -38,7 +38,13 @@
       {% endif %}
       <a href="{% url 'reports:export' %}" class="w3-bar-item w3-button w3-right">{% trans 'Export reports' %}</a>
       <a href="{% url 'reports:import' %}" class="w3-bar-item w3-button w3-right">{% trans 'Import reports' %}</a>
-      <a href="{% url 'reports:add' %}" class="w3-bar-item w3-button w3-right">{% trans 'Add report' %}</a>
+      <div class="w3-dropdown-hover w3-right">
+        <button class="w3-button">{% trans 'Add report' %} <i class="fa fa-caret-down"></i></button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+            <a href="{% url 'reports:add_fee' %}" class="w3-bar-item w3-button w3-right">{% trans 'Add fee report' %}</a>
+            <a href="{% url 'reports:add_fix' %}" class="w3-bar-item w3-button w3-right">{% trans 'Add fixed price report' %}</a>
+        </div>
+      </div>
     </div>
 
     <p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
@@ -62,8 +68,24 @@
                 <td style="text-align: right">{{ month.brutto|default:'-'|intcomma }} {% if month.brutto %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.brutto_vat|default:'-'|intcomma }} {% if month.brutto_vat %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{{ month.vat_percent }}%</span>{{ month.vat|default:'-'|intcomma }}</span> {% if month.vat %}{{ year_report.currency }}{% endif %}</td>
-                <td style="text-align: right">{{ month.fee|default:'-'|floatformat:2 }} {% if month.fee %}{{ year_report.currency }}{% endif %}</td>
-                <td style="text-align: right">{{ month.hours|default:'-' }}</td>
+                <td style="text-align: right">
+                    {% if month.fixed_price %}
+                        <span class="w3-tooltip">
+                            <span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Fixed price' %}</span>
+                            <i class="fas fa-info-circle"></i>
+                        </span>
+                    {% endif %}
+                    {{ month.fee|default:'-' }} {% if month.fee %}{{ year_report.currency }}{% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if month.fixed_price %}
+                        <span class="w3-tooltip">
+                            <span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Fixed price' %}</span>
+                            <i class="fas fa-info-circle"></i>
+                        </span>
+                    {% endif %}
+                    {{ month.hours|default:'-' }}
+                </td>
                 <td>
                   {% if current_customer and month.id %}
                   {% if month.invoice %}
@@ -72,7 +94,12 @@
                   {% endif %}
                   <a href="{% url 'invoice:detail' month.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Invoice' %}</span><i class="far fa-file-alt"></i></span></a>
                   |
-                  <a href="{% url 'reports:update' month.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Update' %}</span><i class="fas fa-edit"></i></span></a>
+                  {% if month.fixed_price %}
+                    <a href="{% url 'reports:update_fix' month.id %}">
+                  {% else %}
+                    <a href="{% url 'reports:update_fee' month.id %}">
+                  {% endif %}
+                  <span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Update' %}</span><i class="fas fa-edit"></i></span></a>
                   |
                   <a href="{% url 'reports:delete' month.id %}"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans 'Delete' %}</span><i class="fas fa-trash"></i></span></a>
                   {% endif %}
@@ -96,7 +123,7 @@
             <td style="text-align: right">{{ quarter.brutto|default:'-'|intcomma }} {% if quarter.brutto %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.brutto_vat|default:'-'|intcomma }} {% if quarter.brutto_vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.vat|default:'-'|intcomma }} {% if quarter.vat %}{{ year_report.currency }}{% endif %}</td>
-            <td style="text-align: right">{{ quarter.fee|default:'-'|floatformat:2 }} {% if quarter.fee %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ quarter.fee|default:'-' }} {% if quarter.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.hours|default:'-' }}</td>
             <td></td>
           </tr>
@@ -117,7 +144,7 @@
             <td style="text-align: right">{{ year_report.brutto|default:'-'|intcomma }} {% if year_report.brutto %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.brutto_vat|default:'-'|intcomma }} {% if year_report.brutto_vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.vat|default:'-'|intcomma }} {% if year_report.vat %}{{ year_report.currency }}{% endif %}</td>
-            <td style="text-align: right">{{ year_report.fee|default:'-'|floatformat:2 }} {% if year_report.fee %}{{ year_report.currency }}{% endif %}</td>
+            <td style="text-align: right">{{ year_report.fee|default:'-' }} {% if year_report.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.hours|default:'-' }}</td>
             <td></td>
         </tr>
