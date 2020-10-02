@@ -52,8 +52,6 @@
             <th style="text-align: center">{% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
             <th style="text-align: center">{% trans 'Hours' %}</th>
-            <th style="text-align: center">{% trans 'Hours/Day' %}</th>
-            <th style="text-align: center">{% trans 'Hours/Week' %}</th>
             <th style="text-align: center">{% if current_customer %}{% trans 'Actions' %}{% endif %}</th>
         </tr>
         </thead>
@@ -66,8 +64,6 @@
                 <td style="text-align: right"><span class="w3-tooltip"><span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{{ month.vat_percent }}%</span>{{ month.vat|default:'-'|intcomma }}</span> {% if month.vat %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.fee|default:'-'|floatformat:2 }} {% if month.fee %}{{ year_report.currency }}{% endif %}</td>
                 <td style="text-align: right">{{ month.hours|default:'-' }}</td>
-                <td style="text-align: right">{{ month.hours_per_day|default:'-' }}</td>
-                <td style="text-align: right">{{ month.hours_per_week|default:'-' }}</td>
                 <td>
                   {% if current_customer and month.id %}
                   {% if month.invoice %}
@@ -91,8 +87,6 @@
             <th style="text-align: center">{% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
             <th style="text-align: center">{% trans 'Hours' %}</th>
-            <th style="text-align: center">{% trans 'Hours/Day' %}</th>
-            <th style="text-align: center">{% trans 'Hours/Week' %}</th>
             <th style="text-align: center">{% if current_customer %}{% trans 'Actions' %}{% endif %}</th>
         </tr>
         </thead>
@@ -104,8 +98,6 @@
             <td style="text-align: right">{{ quarter.vat|default:'-'|intcomma }} {% if quarter.vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.fee|default:'-'|floatformat:2 }} {% if quarter.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ quarter.hours|default:'-' }}</td>
-            <td style="text-align: right">{{ quarter.hours_per_day|default:'-' }}</td>
-            <td style="text-align: right">{{ quarter.hours_per_week|default:'-' }}</td>
             <td></td>
           </tr>
         {% endfor %}
@@ -117,8 +109,6 @@
             <th style="text-align: center">{% trans 'VAT' %}</th>
             <th style="text-align: center">{% trans 'Hourly Rate' %}</th>
             <th style="text-align: center">{% trans 'Hours' %}</th>
-            <th style="text-align: center">{% trans 'Hours/Day' %}</th>
-            <th style="text-align: center">{% trans 'Hours/Week' %}</th>
             <th style="text-align: center">{% if current_customer %}{% trans 'Actions' %}{% endif %}</th>
         </tr>
         </thead>
@@ -129,8 +119,6 @@
             <td style="text-align: right">{{ year_report.vat|default:'-'|intcomma }} {% if year_report.vat %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.fee|default:'-'|floatformat:2 }} {% if year_report.fee %}{{ year_report.currency }}{% endif %}</td>
             <td style="text-align: right">{{ year_report.hours|default:'-' }}</td>
-            <td style="text-align: right">{{ year_report.hours_per_day|default:'-' }}</td>
-            <td style="text-align: right">{{ year_report.hours_per_week|default:'-' }}</td>
             <td></td>
         </tr>
         </tbody>
