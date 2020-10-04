@@ -93,7 +93,8 @@ class MonthReport(models.Model):
         if other.hours:
             self.fee = round((self.brutto + other.brutto) / total_hours, 2)
         self.hours = total_hours
-        self.fixed_price = other.fixed_price
+        if self.fixed_price or other.fixed_price:
+            self.fixed_price = True
         return self
 
     def __str__(self):
