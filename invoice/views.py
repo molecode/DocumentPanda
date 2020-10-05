@@ -1,6 +1,6 @@
-import os
 import calendar
 from datetime import date
+from pathlib import Path
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -19,11 +19,15 @@ from common.mixins import FormViewW3Mixin
 
 def download(request, report_pk):
     report = get_object_or_404(MonthReport, pk=report_pk)
+    if not Path(report.invoice.file_path).exists():
+        create_pdf(report.invoice)
     return FileResponse(open(report.invoice.file_path, 'rb'), as_attachment=True)
 
 
 def preview(request, report_pk):
     report = get_object_or_404(MonthReport, pk=report_pk)
+    if not Path(report.invoice.file_path).exists():
+        create_pdf(report.invoice)
     return FileResponse(open(report.invoice.file_path, 'rb'))
 
 
@@ -78,6 +82,11 @@ class InvoiceUpdateView(ChangeInvoiceMixin, UpdateView):
             report = self.object.month_report
             return reverse_lazy('invoice:download', kwargs={'report_pk': report.pk})
         return reverse_lazy('invoice:list')
+
+    def form_valid(self, form):
+        success_url = super().form_valid(form)
+        create_pdf(self.object)
+        return success_url
 
 
 class InvoiceCreateView(ChangeInvoiceMixin, CreateView):
