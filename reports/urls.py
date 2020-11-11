@@ -4,7 +4,7 @@ from . import views
 
 app_name = 'reports'
 urlpatterns = [
-    url(r'add/fee$', views.FeeReportsCreateView.as_view(), name='add_fee'),
+    url(r'add/hours$', views.FeeReportsCreateView.as_view(), name='add_hours'),
     url(r'add/fix$', views.FixedPriceReportsCreateView.as_view(), name='add_fix'),
     url(r'(?P<pk>[0-9]+)/update/fee$', views.FeeReportsUpdateView.as_view(), name='update_fee'),
     url(r'(?P<pk>[0-9]+)/update/fix$', views.FixedPriceReportsUpdateView.as_view(), name='update_fix'),
