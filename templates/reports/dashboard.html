@@ -9,7 +9,14 @@
     <table>
       <tr>
         <td>Average Reports:</td>
-        <td>{{ average_reports.0|intcomma }} Euro (~ {{ average_reports_hours }} hours per week)</td>
+        <td>
+          {{ average_reports.0|intcomma }} Euro (~ {{ average_reports_hours }} hours per day
+          <span class="w3-tooltip">
+            <span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">{% trans '209 working days per year: 365 days minus weekends and holidays minus 30 vacation and 14 sick days' %}</span>
+            <i class="fas fa-info-circle"></i>
+          </span>
+          )
+        </td>
       </tr>
       <tr>
         <td>Average Income:</td>

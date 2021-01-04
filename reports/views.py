@@ -60,40 +60,45 @@ class DashboardView(TemplateView):
             if not last_year:
                 last_year = MonthReport.objects.first().year
 
-            for year in range(first_year, last_year + 1):
-                month_reports = MonthReport.objects.filter(year=year)
-                year_report = YearReport(year, month_reports)
-                year_reports.append(year_report)
+            if first_year <= last_year:
+                for year in range(first_year, last_year + 1):
+                    month_reports = MonthReport.objects.filter(year=year)
+                    year_report = YearReport(year, month_reports)
+                    year_reports.append(year_report)
 
-                tax_report = Tax.objects.filter(year=year)
-                if tax_report:
-                    tax_reports.append(tax_report[0])
-                else:
-                    tax_reports.append(0)
+                    tax_report = Tax.objects.filter(year=year)
+                    if tax_report:
+                        tax_reports.append(tax_report[0])
+                    else:
+                        tax_reports.append(0)
 
-            for report in year_reports:
-                average_reports_value += report.brutto
-                # TODO - Replace 52 with real calculation of working weeks (52 - vacation - sicktime)
-                average_reports_hours_value += report.hours / 52
-            average_reports_value = average_reports_value / len(year_reports)
-            average_reports_hours_value = average_reports_hours_value / len(year_reports)
+                for report in year_reports:
+                    average_reports_value += report.brutto
+                    # Magic number 209: These are the average working days per year.
+                    # 365 days of a year minus weekends and holiday days
+                    # minus 30 vacations days minus 14 sick days
+                    average_reports_hours_value += report.hours / 209
+                average_reports_value = average_reports_value / len(year_reports)
+                average_reports_hours_value = average_reports_hours_value / len(year_reports)
 
-            for report in tax_reports:
-                if isinstance(report, Tax):
-                    average_income_value += report.income
-                    average_profit_value += report.get_profit()
-                else:
-                    average_income_value += report
-                    average_profit_value += report
-            average_income_value = average_income_value / len(tax_reports)
-            average_profit_value = average_profit_value / len(tax_reports)
+                for report in tax_reports:
+                    if isinstance(report, Tax):
+                        average_income_value += report.income
+                        average_profit_value += report.get_profit()
+                    else:
+                        average_income_value += report
+                        average_profit_value += report
+                average_income_value = average_income_value / len(tax_reports)
+                average_profit_value = average_profit_value / len(tax_reports)
+            else:
+                messages.error(self.request, "'from' cannot be bigger than 'to' value.")
         except AttributeError as error:
             pass
 
-        context['average_income'] = [round(average_income_value)] * len(tax_reports)
-        context['average_profit'] = [round(average_profit_value)] * len(tax_reports)
-        context['average_reports'] = [round(average_reports_value)] * len(year_reports)
-        context['average_reports_hours'] = round(average_reports_hours_value)
+        context['average_income'] = [float(round(average_income_value, 2))] * len(tax_reports)
+        context['average_profit'] = [float(round(average_profit_value, 2))] * len(tax_reports)
+        context['average_reports'] = [float(round(average_reports_value, 2))] * len(year_reports)
+        context['average_reports_hours'] = round(average_reports_hours_value, 2)
         context['year_reports'] = year_reports
         context['tax_reports'] = tax_reports
 
