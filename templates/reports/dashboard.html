@@ -1,10 +1,25 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load l10n %}
+{% load humanize %}
 
 {% block body %}
   <div class="w3-content">
-  <p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
+    <p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
+    <table>
+      <tr>
+        <td>Average Reports:</td>
+        <td>{{ average_reports.0|intcomma }} Euro (~ {{ average_reports_hours }} hours per week)</td>
+      </tr>
+      <tr>
+        <td>Average Income:</td>
+        <td>{{ average_income.0|intcomma }} Euro</td>
+      </tr>
+      <tr>
+        <td>Average Profit:</td>
+        <td>{{ average_profit.0|intcomma }} Euro</td>
+      </tr>
+    </table>
 
 {% localize off %}
   <script>
@@ -21,6 +36,13 @@
             lineTension: 0.1
           },
           {
+            label: "Reports (average)",
+            data: {{ average_reports }},
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            lineTension: 0.01
+          },
+          {
             label: "Income",
             data: [{% for tax_report in tax_reports %}{% if tax_report %}{{ tax_report.income }},{% else %}0,{% endif %}{% endfor %}],
             fill: false,
@@ -28,8 +50,22 @@
             lineTension: 0.1
           },
           {
+            label: "Income (average)",
+            data: {{ average_income }},
+            fill: false,
+            borderColor: 'rgb(255, 128, 0)',
+            lineTension: 0.1
+          },
+          {
             label: "Profit",
             data: [{% for tax_report in tax_reports %}{% if tax_report %}{{ tax_report.get_profit }},{% else %}0,{% endif %}{% endfor %}],
+            fill: false,
+            borderColor: 'rgb(191, 62, 62)',
+            lineTension: 0.1
+          },
+          {
+            label: "Profit (average)",
+            data: {{ average_profit }},
             fill: false,
             borderColor: 'rgb(191, 62, 62)',
             lineTension: 0.1

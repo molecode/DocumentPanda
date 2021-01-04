@@ -1,6 +1,7 @@
 import csv
 import datetime
 from io import TextIOWrapper
+from functools import reduce
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import IntegrityError
@@ -44,25 +45,54 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
 
+        first_year = int(self.request.GET.get("from", 0))
+        last_year = int(self.request.GET.get("to", 0))
         year_reports = []
         tax_reports = []
-        first_report = MonthReport.objects.last()
-        if first_report:
-            first_year = first_report.year
-            last_year = MonthReport.objects.first().year
-            for year in range(first_year, last_year + 1):
-                month_reports = MonthReport.objects.filter(year=year)
-                year_report = YearReport(year, month_reports)
-                year_reports.append(year_report)
 
-                tax_report = Tax.objects.filter(year=year)
-                if tax_report:
-                    tax_reports.append(tax_report[0])
-                else:
-                    tax_reports.append(0)
+        if not first_year:
+            first_year = MonthReport.objects.last().year
+        if not last_year:
+            last_year = MonthReport.objects.first().year
+
+        for year in range(first_year, last_year + 1):
+            month_reports = MonthReport.objects.filter(year=year)
+            year_report = YearReport(year, month_reports)
+            year_reports.append(year_report)
+
+            tax_report = Tax.objects.filter(year=year)
+            if tax_report:
+                tax_reports.append(tax_report[0])
+            else:
+                tax_reports.append(0)
 
         context['year_reports'] = year_reports
         context['tax_reports'] = tax_reports
+
+        average_reports_value = 0
+        average_reports_hours_value = 0
+        for report in year_reports:
+            average_reports_value += report.brutto
+            # TODO - Replace 52 with real calculation of working weeks (52 - vacation - sicktime)
+            average_reports_hours_value += report.hours / 52
+        average_reports_value = average_reports_value / len(year_reports)
+        average_reports_hours_value = average_reports_hours_value / len(year_reports)
+        context['average_reports'] = [round(average_reports_value)] * len(year_reports)
+        context['average_reports_hours'] = round(average_reports_hours_value)
+
+        average_income_value = 0
+        average_profit_value = 0
+        for report in tax_reports:
+            if isinstance(report, Tax):
+                average_income_value += report.income
+                average_profit_value += report.get_profit()
+            else:
+                average_income_value += report
+                average_profit_value += report
+        average_income_value = average_income_value / len(tax_reports)
+        average_profit_value = average_profit_value / len(tax_reports)
+        context['average_income'] = [round(average_income_value)] * len(tax_reports)
+        context['average_profit'] = [round(average_profit_value)] * len(tax_reports)
 
         return context
 
