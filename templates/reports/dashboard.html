@@ -5,7 +5,29 @@
 
 {% block body %}
   <div class="w3-content">
-    <p><div class="chartjs-wrapper"><canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas></div></p>
+    <div class="w3-bar w3-teal">
+      <a href="#" class="w3-bar-item w3-button"></a>
+      <div class="w3-dropdown-hover">
+        from<button class="w3-button">{{ request.GET.from }} <i class="fa fa-caret-down"></i></button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          {% for year in total_years %}
+            <a href="{% url 'dashboard' %}?from={{ year }}&to={{ request.GET.to|default:total_last_year }}" class="w3-bar-item w3-button">{{ year }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="w3-dropdown-hover">
+        from<button class="w3-button">{{ request.GET.to }} <i class="fa fa-caret-down"></i></button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          {% for year in total_years %}
+            <a href="{% url 'dashboard' %}?from={{ request.GET.from|default:total_first_year }}&to={{ year }}" class="w3-bar-item w3-button">{{ year }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <p></p>
+    <div class="chartjs-wrapper">
+      <canvas id="myChart" class="chartjs" width="undefined" height="100px"></canvas>
+    </div>
     <table>
       <tr>
         <td>Average Reports:</td>
@@ -27,6 +49,7 @@
         <td>{{ average_profit.0|intcomma }} Euro</td>
       </tr>
     </table>
+  </div>
 
 {% localize off %}
   <script>
@@ -46,6 +69,7 @@
             label: "Reports (average)",
             data: {{ average_reports }},
             fill: false,
+            hidden: true,
             borderColor: 'rgb(75, 192, 192)',
             lineTension: 0.01
           },
@@ -60,6 +84,7 @@
             label: "Income (average)",
             data: {{ average_income }},
             fill: false,
+            hidden: true,
             borderColor: 'rgb(255, 128, 0)',
             lineTension: 0.1
           },
@@ -74,6 +99,7 @@
             label: "Profit (average)",
             data: {{ average_profit }},
             fill: false,
+            hidden: true,
             borderColor: 'rgb(191, 62, 62)',
             lineTension: 0.1
           },

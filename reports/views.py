@@ -60,6 +60,12 @@ class DashboardView(TemplateView):
             if not last_year:
                 last_year = MonthReport.objects.first().year
 
+            total_first_year = MonthReport.objects.last().year
+            total_last_year = MonthReport.objects.first().year
+            context['total_first_year'] = total_first_year
+            context['total_last_year'] = total_last_year
+            context['total_years'] = [year for year in range(total_first_year, total_last_year + 1)]
+
             if first_year <= last_year:
                 for year in range(first_year, last_year + 1):
                     month_reports = MonthReport.objects.filter(year=year)
