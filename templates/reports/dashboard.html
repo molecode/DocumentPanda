@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="w3-dropdown-hover">
-        from<button class="w3-button">{{ request.GET.to }} <i class="fa fa-caret-down"></i></button>
+        to<button class="w3-button">{{ request.GET.to }} <i class="fa fa-caret-down"></i></button>
         <div class="w3-dropdown-content w3-bar-block w3-card-4">
           {% for year in total_years %}
             <a href="{% url 'dashboard' %}?from={{ request.GET.from|default:total_first_year }}&to={{ year }}" class="w3-bar-item w3-button">{{ year }}</a>
