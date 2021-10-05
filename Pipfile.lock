@@ -42,10 +42,11 @@
         },
         "django-solo": {
             "hashes": [
-                "sha256:e412f0f844aa101fa77ba5d07768a8a77ea0e0a6e098b87a6eef3bedb2e5ecd4"
+                "sha256:b42487d5b82b24232edc09b54a8cc3919e7a79bd684c1ac6346ecaf9942c4288",
+                "sha256:ef63bce7b6d0225821de0b29fa00be17c3996d41ab340ca6c51d004129742c32"
             ],
             "index": "pypi",
-            "version": "==1.1.5"
+            "version": "==1.2.0"
         },
         "pillow": {
             "hashes": [
