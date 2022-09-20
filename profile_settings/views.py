@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from .models import ProfileSettings
 from common.mixins import FormViewW3Mixin
