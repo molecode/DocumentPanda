@@ -34,11 +34,11 @@
         },
         "django-extensions": {
             "hashes": [
-                "sha256:4c234a7236e9e41c17d9036f6dae7a3a9b212527105b8a0d24b2459b267825f0",
-                "sha256:7dc7cd1da50d83b76447a58f5d7e5c8e6cd83f21e9b7e5f97e6b644f4d4e21a6"
+                "sha256:2a4f4d757be2563cd1ff7cfdf2e57468f5f931cc88b23cf82ca75717aae504a4",
+                "sha256:421464be390289513f86cb5e18eb43e5dc1de8b4c27ba9faa3b91261b0d67e09"
             ],
             "index": "pypi",
-            "version": "==3.2.0"
+            "version": "==3.2.1"
         },
         "django-solo": {
             "hashes": [
@@ -247,9 +247,11 @@
         },
         "termcolor": {
             "hashes": [
-                "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"
+                "sha256:4889f2243b1da3934fc6cf4b57ee50a0ce98065ec06bfddac3fa6db24a9fcde2",
+                "sha256:6e1a4b8e9c064ad8f9dfe2f9b35a7871d6ea5b6bb4f9da55bc0fd494b2302204"
             ],
-            "version": "==1.1.0"
+            "markers": "python_version >= '3.7'",
+            "version": "==2.0.0"
         },
         "tomli": {
             "hashes": [
