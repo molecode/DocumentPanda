@@ -67,7 +67,7 @@
           },
           {
             label: "Income tax",
-            data: [{% for tax_report in tax_list reversed %}{% if tax_report %}{{ tax_report.income_tax }},{% else %}0,{% endif %}{% endfor %}],
+            data: [{% for tax_report in tax_list reversed %}{% if tax_report %}{{ tax_report.get_total_tax }},{% else %}0,{% endif %}{% endfor %}],
             fill: false,
             borderColor: 'rgb(0, 102, 0)',
             lineTension: 0.1
