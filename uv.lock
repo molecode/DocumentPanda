@@ -156,20 +156,20 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django", specifier = ">=6.0" },
-    { name = "django-extensions", specifier = ">=4.1" },
-    { name = "django-solo", specifier = ">=2.4.0" },
-    { name = "pytz", specifier = ">=2025.2" },
-    { name = "reportlab", specifier = ">=4.4.5" },
+    { name = "django", specifier = "==6.0" },
+    { name = "django-extensions", specifier = "==4.1" },
+    { name = "django-solo", specifier = "==2.4.0" },
+    { name = "pytz", specifier = "==2025.2" },
+    { name = "reportlab", specifier = "==4.4.5" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "pre-commit", specifier = ">=4.5.0" },
-    { name = "pytest", specifier = ">=9.0.1" },
-    { name = "pytest-django", specifier = ">=4.11.1" },
-    { name = "pytest-sugar", specifier = ">=1.1.1" },
-    { name = "ruff", specifier = ">=0.14.8" },
+    { name = "pre-commit", specifier = "==4.5.0" },
+    { name = "pytest", specifier = "==9.0.1" },
+    { name = "pytest-django", specifier = "==4.11.1" },
+    { name = "pytest-sugar", specifier = "==1.1.1" },
+    { name = "ruff", specifier = "==0.14.8" },
 ]
 
 [[package]]
