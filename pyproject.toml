@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.5.0",
     "pytest>=9.0.1",
     "pytest-django>=4.11.1",
     "pytest-sugar>=1.1.1",
