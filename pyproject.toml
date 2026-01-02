@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 dependencies = [
     "django==6.0",
     "django-extensions==4.1",
-    "django-solo==2.4.0",
+    "django-solo==2.5.1",
     "pytz==2025.2",
     "reportlab==4.4.7",
 ]
