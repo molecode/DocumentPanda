@@ -3,7 +3,7 @@ name = "documentpanda"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "django==6.0",
+    "django==6.0.1",
     "django-extensions==4.1",
     "django-solo==2.5.1",
     "pytz==2025.2",
