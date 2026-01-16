@@ -7,7 +7,7 @@ dependencies = [
     "django-extensions==4.1",
     "django-solo==2.5.1",
     "pytz==2025.2",
-    "reportlab==4.4.7",
+    "reportlab==4.4.9",
 ]
 
 [dependency-groups]
