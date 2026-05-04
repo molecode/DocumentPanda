@@ -6,7 +6,7 @@ dependencies = [
     "django==6.0.4",
     "django-extensions==4.1",
     "django-solo==2.5.1",
-    "pytz==2026.1.post1",
+    "pytz==2026.2",
     "reportlab==4.5.0",
 ]
 
